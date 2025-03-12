@@ -4,6 +4,11 @@ import numpy as np
 import tempfile
 import time
 import os
+import sys
+print(sys.version)
+import cv2
+print(cv2.__version__)
+
 
 def get_duration(selection, custom_input):
     """Determina la duración basada en la opción seleccionada o el valor personalizado."""
