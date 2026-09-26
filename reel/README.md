@@ -10,6 +10,7 @@ cuadro por cuadro con Chromium) y la música es original, sintetizada, sin derec
 |---|---|
 | `mision-rosario-reel.mp4` | Reel con música, audio normalizado a −14 LUFS |
 | `mision-rosario-reel-sin-audio.mp4` | Misma edición sin música, para usar un audio en tendencia de Instagram |
+| `mision-rosario-reel-liviano.mp4` | Versión más liviana (21 MB) para enviar por WhatsApp o revisar en el celular |
 | `portada.jpg` | Portada sugerida («Tu familia tiene una misión») |
 
 ## Guion (compás de 2,5 s a 96 BPM, cada corte cae en el tiempo fuerte)
