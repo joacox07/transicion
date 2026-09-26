@@ -263,6 +263,101 @@ function person(x, y, h, o = {}) {
   const flip = o.flip ? `transform="translate(${f1(2 * x)},0) scale(-1,1)"` : '';
   return `<g ${flip}>${out}</g>`;
 }
+
+// ------------------------------------------------------------------ el Papa León XIV (dibujo estilizado, reconocible por sus rasgos)
+/**
+ * pope(x, y, h, o): pies en (x,y), altura h.
+ * Rasgos: rostro alargado, frente alta (entradas), pelo gris corto, anteojos finos rectangulares,
+ * nariz larga y recta, sonrisa amplia con arrugas de risa. Sotana blanca, esclavina, faja, solideo, cruz pectoral.
+ * o.pose: 'stand' | 'bless' | 'wave2' | 'carry' | 'wash' | 'pray'   o.turn: -1..1 (giro del rostro)
+ * o.mozzetta: muceta roja + estola carmesí (balcón de la elección) · o.alb: alba con estola dorada y delantal (lavatorio)
+ */
+function pope(x, y, h, o = {}) {
+  const u = h / 100, pose = o.pose || 'stand', turn = o.turn || 0, kneel = pose === 'wash';
+  const skin = '#f1d3b6', white = '#f8f6f0', whiteD = '#e3ddd1', gold = '#e0b040', grey = '#b8b4ae';
+  const dy = kneel ? 26 * u : 0;
+  const hy = y - 89 * u + dy, hr = 9.4 * u, sy = y - 75 * u + dy, sx = 11.8 * u, waist = y - 47 * u + dy;
+  const iw = Math.max(1, u * .85);
+  let s = '';
+  // --- túnica (sotana o alba)
+  const hem = kneel ? y - 2 * u : y - 1 * u, hw = kneel ? 22 * u : 16.5 * u;
+  const robeD = kneel
+    ? `M${f1(x - sx)},${f1(sy + 3 * u)}Q${f1(x - sx)},${f1(sy - 3 * u)} ${f1(x - sx + 5 * u)},${f1(sy - 3 * u)}L${f1(x + sx - 5 * u)},${f1(sy - 3 * u)}Q${f1(x + sx)},${f1(sy - 3 * u)} ${f1(x + sx)},${f1(sy + 3 * u)}L${f1(x + 13 * u)},${f1(waist + 4 * u)}Q${f1(x + 30 * u)},${f1(y - 14 * u)} ${f1(x + 28 * u)},${f1(hem)}L${f1(x - 18 * u)},${f1(hem)}Q${f1(x - 16 * u)},${f1(waist + 10 * u)} ${f1(x - 12 * u)},${f1(waist)}Z`
+    : `M${f1(x - sx)},${f1(sy + 3 * u)}Q${f1(x - sx)},${f1(sy - 3 * u)} ${f1(x - sx + 5 * u)},${f1(sy - 3 * u)}L${f1(x + sx - 5 * u)},${f1(sy - 3 * u)}Q${f1(x + sx)},${f1(sy - 3 * u)} ${f1(x + sx)},${f1(sy + 3 * u)}L${f1(x + sx - 1 * u)},${f1(waist)}L${f1(x + hw)},${f1(hem)}L${f1(x - hw)},${f1(hem)}L${f1(x - sx + 1 * u)},${f1(waist)}Z`;
+  if (!kneel) s += ellipse(x - 5 * u, y - 1 * u, 5.5 * u, 2.4 * u, o.barefoot ? skin : '#8a2a2a') + ellipse(x + 6 * u, y - 1 * u, 5.5 * u, 2.4 * u, o.barefoot ? skin : '#8a2a2a');
+  s += path(robeD, white) + path(`M${f1(x + 2 * u)},${f1(sy - 3 * u)}L${f1(x + sx - 5 * u)},${f1(sy - 3 * u)}Q${f1(x + sx)},${f1(sy - 3 * u)} ${f1(x + sx)},${f1(sy + 3 * u)}L${f1(x + sx - 1 * u)},${f1(waist)}L${f1(x + (kneel ? 26 : hw / u) * u)},${f1(hem)}L${f1(x + 3 * u)},${f1(hem)}Z`, whiteD, 'opacity=".6"');
+  s += ink(robeD, iw, .6) + ink(`M${f1(x - 4 * u)},${f1(waist + 6 * u)} Q${f1(x - 6 * u)},${f1(hem - 16 * u)} ${f1(x - 8 * u)},${f1(hem - 1 * u)} M${f1(x + 5 * u)},${f1(waist + 8 * u)} Q${f1(x + 6 * u)},${f1(hem - 16 * u)} ${f1(x + 9 * u)},${f1(hem - 1 * u)}`, iw * .8, .4);
+  if (!o.alb && !kneel) for (let i = 0; i < 9; i++) s += circle(x, sy + 3 * u + i * 4.6 * u, .8 * u, '#9a938a');    // botones de la sotana
+  if (o.alb) { // delantal de lino y estola dorada cruzada (lavatorio)
+    s += path(`M${f1(x - 11 * u)},${f1(waist - 2 * u)}L${f1(x + 12 * u)},${f1(waist - 2 * u)}L${f1(x + (kneel ? 24 : 14) * u)},${f1(hem - 4 * u)}L${f1(x - 13 * u)},${f1(hem - 4 * u)}Z`, '#fdfbf4') + ink(`M${f1(x - 11 * u)},${f1(waist - 2 * u)}L${f1(x + 12 * u)},${f1(waist - 2 * u)}`, iw, .6);
+    s += path(`M${f1(x - 6 * u)},${f1(sy - 2 * u)}L${f1(x - 2 * u)},${f1(sy - 2 * u)}L${f1(x - 3 * u)},${f1(waist + 14 * u)}L${f1(x - 7 * u)},${f1(waist + 14 * u)}Z`, gold) + path(`M${f1(x + 2 * u)},${f1(sy - 2 * u)}L${f1(x + 6 * u)},${f1(sy - 2 * u)}L${f1(x + 7 * u)},${f1(waist + 14 * u)}L${f1(x + 3 * u)},${f1(waist + 14 * u)}Z`, gold);
+  }
+  // --- faja blanca con los flecos a un costado
+  if (!o.alb) s += rect(x - sx + .5 * u, waist - 3 * u, 2 * sx - 1 * u, 4 * u, '#f3efe6') + ink(`M${f1(x - sx + .5 * u)},${f1(waist - 3 * u)} L${f1(x + sx - .5 * u)},${f1(waist - 3 * u)} M${f1(x - sx + .5 * u)},${f1(waist + 1 * u)} L${f1(x + sx - .5 * u)},${f1(waist + 1 * u)}`, iw * .8, .5) +
+    path(`M${f1(x - 8 * u)},${f1(waist)}L${f1(x - 4 * u)},${f1(waist)}L${f1(x - 5 * u)},${f1(waist + 22 * u)}L${f1(x - 9.5 * u)},${f1(waist + 22 * u)}Z`, '#f3efe6') + ink(`M${f1(x - 9.5 * u)},${f1(waist + 22 * u)} l0,3 M${f1(x - 8 * u)},${f1(waist + 22 * u)} l0,3 M${f1(x - 6.5 * u)},${f1(waist + 22 * u)} l0,3`, iw * .7, .6);
+  // --- esclavina (o muceta roja con estola carmesí)
+  const capeCol = o.mozzetta ? '#b3202a' : white;
+  if (o.mozzetta) s += path(`M${f1(x - 12 * u)},${f1(sy + 6 * u)}L${f1(x + 12 * u)},${f1(sy + 6 * u)}L${f1(x + 15 * u)},${f1(waist + 16 * u)}L${f1(x - 15 * u)},${f1(waist + 16 * u)}Z`, '#fbf8f1') + ink(`M${f1(x - 15 * u)},${f1(waist + 16 * u)} ${[...Array(10)].map((_, i) => `L${f1(x - 15 * u + (i + .5) * 3 * u)},${f1(waist + (i % 2 ? 16 : 19) * u)}`).join(' ')}`, iw, .5);
+  if (!o.alb) {
+    const capeD = `M${f1(x - sx - 2 * u)},${f1(sy + 3 * u)}Q${f1(x)},${f1(sy - 7 * u)} ${f1(x + sx + 2 * u)},${f1(sy + 3 * u)}L${f1(x + sx + 3.5 * u)},${f1(sy + 20 * u)}Q${f1(x)},${f1(sy + 25 * u)} ${f1(x - sx - 3.5 * u)},${f1(sy + 20 * u)}Z`;
+    s += path(capeD, capeCol) + ink(capeD, iw, .6) + ink(`M${f1(x)},${f1(sy - 2 * u)} L${f1(x)},${f1(sy + 23 * u)}`, iw * .7, .4);
+    if (o.mozzetta) {
+      s += path(`M${f1(x - 5 * u)},${f1(sy - 2 * u)}L${f1(x - 1.5 * u)},${f1(sy)}L${f1(x - 3 * u)},${f1(waist + 20 * u)}L${f1(x - 8 * u)},${f1(waist + 20 * u)}Z`, '#8e1a26') + path(`M${f1(x + 5 * u)},${f1(sy - 2 * u)}L${f1(x + 1.5 * u)},${f1(sy)}L${f1(x + 3 * u)},${f1(waist + 20 * u)}L${f1(x + 8 * u)},${f1(waist + 20 * u)}Z`, '#8e1a26');
+      s += cross(x - 5.5 * u, waist + 15 * u, 5 * u, gold, 1.2 * u) + cross(x + 5.5 * u, waist + 15 * u, 5 * u, gold, 1.2 * u) + ink(`M${f1(x - 8 * u)},${f1(waist + 20 * u)} L${f1(x - 3 * u)},${f1(waist + 20 * u)} M${f1(x + 3 * u)},${f1(waist + 20 * u)} L${f1(x + 8 * u)},${f1(waist + 20 * u)}`, iw * 1.4, .8);
+    }
+  }
+  // --- cruz pectoral dorada con cordón
+  s += `<path d="M${f1(x - 4 * u)},${f1(sy - 2 * u)} Q${f1(x)},${f1(sy + 8 * u)} ${f1(x + 4 * u)},${f1(sy - 2 * u)}" fill="none" stroke="${gold}" stroke-width="${f1(.9 * u)}"/>` + cross(x, sy + 16 * u, 7.5 * u, gold, 1.8 * u) + ink(`M${f1(x)},${f1(sy + 8.5 * u)} L${f1(x)},${f1(sy + 16 * u)}`, iw * .6, .5);
+  // --- brazos
+  const L = [x - sx + 2 * u, sy + 3 * u], R = [x + sx - 2 * u, sy + 3 * u];
+  const sl = o.alb ? white : capeCol;
+  const A = (pts, c) => poly(pts, c, 6.4 * u) + `<polyline points="${pts.map(p => p.map(f1).join(',')).join(' ')}" fill="none" stroke="${INK}" stroke-width="${f1(iw * .7)}" opacity=".35" stroke-linecap="round" stroke-linejoin="round"/>`;
+  const hand = p => circle(p[0], p[1], 3.6 * u, skin) + ink(`M${f1(p[0] - 3 * u)},${f1(p[1])} a${f1(3.6 * u)},${f1(3.6 * u)} 0 1,0 ${f1(6 * u)},0`, iw * .6, .4);
+  const armsFor = {
+    stand: () => [[[L[0] - 2 * u, L[1] + 16 * u], [L[0] - 1 * u, L[1] + 31 * u]], [[R[0] + 2 * u, R[1] + 16 * u], [R[0] + 1 * u, R[1] + 31 * u]]],
+    bless: () => [[[L[0] - 1 * u, L[1] + 15 * u], [L[0] + 6 * u, L[1] + 24 * u]], [[R[0] + 12 * u, R[1] + 4 * u], [R[0] + 14 * u, R[1] - 16 * u]]],
+    wave2: () => { const w = Math.sin((o.phase || 0) * 2) * 3 * u; return [[[L[0] - 11 * u, L[1] - 4 * u], [L[0] - 15 * u + w, L[1] - 21 * u]], [[R[0] + 11 * u, R[1] - 4 * u], [R[0] + 15 * u - w, R[1] - 21 * u]]]; },
+    carry: () => [[[L[0] + 6 * u, L[1] + 12 * u], [R[0] - 2 * u, R[1] - 2 * u]], [[R[0] + 6 * u, R[1] + 10 * u], [R[0] + 5 * u, R[1] - 4 * u]]],
+    wash: () => [[[L[0] + 8 * u, L[1] + 14 * u], [L[0] + 22 * u, L[1] + 20 * u]], [[R[0] + 8 * u, R[1] + 10 * u], [R[0] + 16 * u, R[1] + 6 * u]]],
+    pray: () => { const m = [x, sy + 14 * u]; return [[[L[0] + 1 * u, L[1] + 14 * u], m], [[R[0] - 1 * u, R[1] + 14 * u], m]]; },
+  };
+  const [aL, aR] = (armsFor[pose] || armsFor.stand)();
+  const armsSvg = A([R, ...aR], shade(sl, -.05)) + hand(aR[aR.length - 1]) + A([L, ...aL], sl) + hand(aL[aL.length - 1]);
+  // --- cabeza
+  const fx = turn * hr * .32;                         // desplazamiento de rasgos al girar
+  let hd = rect(x - 3 * u, hy + hr * .75, 6 * u, 5 * u, shade(skin, -.08));
+  hd += ellipse(x - hr * .92 + fx * .3, hy + 1 * u, 1.9 * u, 3 * u, shade(skin, -.08)) + ellipse(x + hr * .92 + fx * .3, hy + 1 * u, 1.9 * u, 3 * u, shade(skin, -.08));
+  const faceD = `M${f1(x - hr * .86)},${f1(hy - hr * .2)} Q${f1(x - hr * .9)},${f1(hy - hr * 1.12)} ${f1(x)},${f1(hy - hr * 1.12)} Q${f1(x + hr * .9)},${f1(hy - hr * 1.12)} ${f1(x + hr * .86)},${f1(hy - hr * .2)} Q${f1(x + hr * .82)},${f1(hy + hr * .75)} ${f1(x + hr * .45)},${f1(hy + hr * 1.08)} Q${f1(x)},${f1(hy + hr * 1.28)} ${f1(x - hr * .45)},${f1(hy + hr * 1.08)} Q${f1(x - hr * .82)},${f1(hy + hr * .75)} ${f1(x - hr * .86)},${f1(hy - hr * .2)}Z`;
+  hd += path(faceD, skin) + ink(faceD, iw * .8, .5);
+  // pelo gris corto a los costados y ralo arriba (frente alta)
+  hd += path(`M${f1(x - hr * .9)},${f1(hy + hr * .15)}Q${f1(x - hr * 1.0)},${f1(hy - hr * .7)} ${f1(x - hr * .45)},${f1(hy - hr * .78)}L${f1(x - hr * .55)},${f1(hy - hr * .35)}Q${f1(x - hr * .8)},${f1(hy - hr * .2)} ${f1(x - hr * .82)},${f1(hy + hr * .15)}Z`, grey) +
+        path(`M${f1(x + hr * .9)},${f1(hy + hr * .15)}Q${f1(x + hr * 1.0)},${f1(hy - hr * .7)} ${f1(x + hr * .45)},${f1(hy - hr * .78)}L${f1(x + hr * .55)},${f1(hy - hr * .35)}Q${f1(x + hr * .8)},${f1(hy - hr * .2)} ${f1(x + hr * .82)},${f1(hy + hr * .15)}Z`, grey) +
+        ink(`M${f1(x - hr * .4)},${f1(hy - hr * .95)} q${f1(hr * .2)},${f1(-hr * .08)} ${f1(hr * .4)},0 M${f1(x - hr * .05)},${f1(hy - hr * 1.0)} q${f1(hr * .2)},${f1(-hr * .06)} ${f1(hr * .4)},${f1(hr * .03)}`, iw * .7, .4);
+  // solideo blanco en la coronilla
+  hd += path(`M${f1(x - hr * .62)},${f1(hy - hr * .78)}Q${f1(x)},${f1(hy - hr * 1.42)} ${f1(x + hr * .62)},${f1(hy - hr * .78)}Q${f1(x)},${f1(hy - hr * .98)} ${f1(x - hr * .62)},${f1(hy - hr * .78)}Z`, '#fbfaf6') + ink(`M${f1(x - hr * .62)},${f1(hy - hr * .78)} Q${f1(x)},${f1(hy - hr * 1.42)} ${f1(x + hr * .62)},${f1(hy - hr * .78)}`, iw * .7, .5);
+  if (!o.back) {
+    const ex = hr * .34, ey = hy - hr * .05;
+    // cejas arqueadas grises
+    hd += ink(`M${f1(x + fx - ex - hr * .2)},${f1(ey - hr * .32)} Q${f1(x + fx - ex)},${f1(ey - hr * .46)} ${f1(x + fx - ex + hr * .2)},${f1(ey - hr * .33)} M${f1(x + fx + ex - hr * .2)},${f1(ey - hr * .33)} Q${f1(x + fx + ex)},${f1(ey - hr * .46)} ${f1(x + fx + ex + hr * .2)},${f1(ey - hr * .32)}`, iw * 1.1, .75);
+    // anteojos finos rectangulares
+    const gw = hr * .5, gh = hr * .32;
+    hd += `<g fill="none" stroke="#6d6a66" stroke-width="${f1(Math.max(.9, u * .55))}">` +
+      `<rect x="${f1(x + fx - ex - gw / 2)}" y="${f1(ey - gh / 2)}" width="${f1(gw)}" height="${f1(gh)}" rx="${f1(gh * .3)}"/><rect x="${f1(x + fx + ex - gw / 2)}" y="${f1(ey - gh / 2)}" width="${f1(gw)}" height="${f1(gh)}" rx="${f1(gh * .3)}"/>` +
+      `<path d="M${f1(x + fx - ex + gw / 2)},${f1(ey - gh * .1)} Q${f1(x + fx)},${f1(ey - gh * .45)} ${f1(x + fx + ex - gw / 2)},${f1(ey - gh * .1)} M${f1(x + fx - ex - gw / 2)},${f1(ey - gh * .2)} L${f1(x - hr * .86)},${f1(ey - gh * .35)} M${f1(x + fx + ex + gw / 2)},${f1(ey - gh * .2)} L${f1(x + hr * .86)},${f1(ey - gh * .35)}"/></g>`;
+    // ojos
+    hd += circle(x + fx - ex, ey + gh * .05, Math.max(.8, hr * .07), INK, 'opacity=".85"') + circle(x + fx + ex, ey + gh * .05, Math.max(.8, hr * .07), INK, 'opacity=".85"');
+    // nariz larga y recta
+    hd += ink(`M${f1(x + fx * 1.1 + hr * .05)},${f1(ey + gh * .1)} L${f1(x + fx * 1.35 + hr * .1)},${f1(hy + hr * .46)}`, iw, .65) + ink(`M${f1(x + fx * 1.3 - hr * .12)},${f1(hy + hr * .5)} Q${f1(x + fx * 1.3)},${f1(hy + hr * .56)} ${f1(x + fx * 1.3 + hr * .13)},${f1(hy + hr * .48)}`, iw * .9, .6);
+    // sonrisa amplia con arrugas de risa
+    hd += ink(`M${f1(x + fx - hr * .4)},${f1(hy + hr * .7)} Q${f1(x + fx)},${f1(hy + hr * .94)} ${f1(x + fx + hr * .4)},${f1(hy + hr * .7)}`, iw * 1.1, .8) +
+      ink(`M${f1(x + fx - hr * .52)},${f1(hy + hr * .5)} q${f1(-hr * .06)},${f1(hr * .12)} 0,${f1(hr * .24)} M${f1(x + fx + hr * .52)},${f1(hy + hr * .5)} q${f1(hr * .06)},${f1(hr * .12)} 0,${f1(hr * .24)}`, iw * .7, .5) +
+      circle(x + fx - hr * .5, hy + hr * .35, hr * .15, '#e7967f', 'opacity=".3"') + circle(x + fx + hr * .5, hy + hr * .35, hr * .15, '#e7967f', 'opacity=".3"');
+  }
+  s += hd + armsSvg;
+  if (pose === 'carry' && o.cross !== false) s = `<g transform="translate(${f1(x + 10 * u)},${f1(sy - 6 * u)}) rotate(24)">${rect(-2.6 * u, -12 * u, 5.2 * u, 88 * u, '#8a6040')}${rect(-18 * u, 4 * u, 36 * u, 5 * u, '#8a6040')}${ink(`M${f1(-2.6 * u)},${f1(-12 * u)} l0,${f1(88 * u)} M${f1(2.6 * u)},${f1(-12 * u)} l0,${f1(88 * u)} M${f1(-18 * u)},${f1(4 * u)} l${f1(36 * u)},0`, iw, .6)}</g>` + s;
+  return o.flip ? `<g transform="translate(${f1(2 * x)},0) scale(-1,1)">${s}</g>` : s;
+}
+
 /** aclara/oscurece un color hex */
 function shade(hex, k) {
   if (hex.length === 4) hex = '#' + [...hex.slice(1)].map(c => c + c).join('');
@@ -384,4 +479,4 @@ function paperTexture(seed = 3) {
   return cv.toDataURL('image/jpeg', .9);
 }
 
-window.LIB = { label, grass, hatch, bricks, windowBox, tree, ink, INK, W, H, RNG, C, g, path, rect, circle, ellipse, line, poly, paper, layer, sky, glow, rays, solDeMayo, clouds, mountains, hills, waves, person, shade, crowd, flag, dove, cross, paperTexture, f1 };
+window.LIB = { pope, label, grass, hatch, bricks, windowBox, tree, ink, INK, W, H, RNG, C, g, path, rect, circle, ellipse, line, poly, paper, layer, sky, glow, rays, solDeMayo, clouds, mountains, hills, waves, person, shade, crowd, flag, dove, cross, paperTexture, f1 };

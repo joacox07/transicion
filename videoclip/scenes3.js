@@ -1,6 +1,6 @@
 /* Escenas: estribillo 2, coda (Familias / Consagrados / Argentina / En el Uno) y estribillo final */
 (() => {
-  const { grass, hatch, bricks, windowBox, tree, ink, W, H, RNG, C, g, path, rect, circle, ellipse, line, poly, paper, layer, sky, glow, rays, solDeMayo, clouds, mountains, hills, waves, person, shade, crowd, flag, dove, cross, f1 } = LIB;
+  const { pope, grass, hatch, bricks, windowBox, tree, ink, W, H, RNG, C, g, path, rect, circle, ellipse, line, poly, paper, layer, sky, glow, rays, solDeMayo, clouds, mountains, hills, waves, person, shade, crowd, flag, dove, cross, f1 } = LIB;
   const S = window.SCENES;
   const { q, qa, pr, ease, clamp } = window.SC;
   const virgenLujan = window.virgenLujan, monstrance = window.monstrance;
@@ -227,10 +227,10 @@
         layer(.9, `<g id="flags3"></g><g id="papel"></g>`);
     },
     update(t, u, p, s) {
-      const k = ease(pr(u, 0, 6)), y = 640 + k * 300, sc = .5 + k * .7;
+      const k = ease(pr(u, 0, 6)), y = 700 + k * 250, sc = .8 + k * 1.05;
       q(s, '#pmovil').innerHTML = `<g transform="translate(960,${f1(y)}) scale(${f1(sc)})">` +
-        rect(-150, -60, 300, 110, '#f7f5f0') + rect(-110, -200, 220, 140, '#dfeef7', 'opacity=".75"') + ink('M-110,-200 L110,-200 L110,-60 L-110,-60Z M-150,-60 L150,-60 L150,50 L-150,50Z', 2, .7) +
-        person(0, -60, 150, { color: '#f7f4ee', robe: true, pose: 'wave', phase: t * 3, skin: C.skin[0], hair: '#d8d2c8', cap: '#fbf8f1', back: true }) +
+        rect(-150, -60, 300, 110, '#f7f5f0') + ink('M-150,-60 L150,-60 L150,50 L-150,50Z', 2, .7) + rect(-120, -150, 12, 90, '#e8e4dc') + rect(108, -150, 12, 90, '#e8e4dc') +
+        pope(0, -60, 210, { pose: 'wave2', phase: t * 3, turn: Math.sin(t * .8) * .4 }) +
         circle(-100, 50, 30, '#2b2b2b') + circle(100, 50, 30, '#2b2b2b') + rect(-150, 0, 300, 10, '#f2b632') + '</g>';
       q(s, '#flags3').innerHTML = drawFlags(fl3, t);
       let pp = ''; for (let i = 0; i < 60; i++) { const r2 = RNG(285 + i), x = r2.range(-100, W + 100), kk = (u * .2 + r2()) % 1; pp += rect(x + Math.sin(u * 2 + i) * 30, -40 + kk * 1150, 9, 13, '#fff', `transform="rotate(${f1(u * 120 + i * 40)} ${f1(x)} ${f1(-40 + kk * 1150)})" opacity=".95"`); }
@@ -245,7 +245,7 @@
       const r = RNG(291);
       let lights = ''; for (let i = 0; i < 500; i++) { const y = r.range(620, 1100), x = r.range(-300, W + 300); lights += circle(x, y, 1.5 + (y - 600) * .006, r.pick(['#ffe7a0', '#fff', '#ffd98a']), `opacity="${f1(r.range(.5, 1))}" class="lt"`); }
       const stage = path('M560,620 L1360,620 L1420,700 L500,700Z', '#e9e2d4') + rect(500, 700, 920, 40, '#c9bfae') + path('M600,620 L600,300 L1320,300 L1320,620', 'none', 'stroke="#d8d0c0" stroke-width="16"') + path('M580,300 Q960,200 1340,300', 'none', 'stroke="#f4efe6" stroke-width="22"') +
-        cross(960, 610, 280, '#fbf8f1', 22) + rect(820, 560, 280, 60, '#f4efe6') + ink('M820,560 L1100,560 L1100,620 L820,620Z', 1.6, .6) + person(960, 560, 90, { color: '#f7f4ee', robe: true, pose: 'raise', skin: C.skin[0], hair: '#d8d2c8', cap: '#fbf8f1' }) +
+        cross(960, 610, 280, '#fbf8f1', 22) + rect(820, 560, 280, 60, '#f4efe6') + ink('M820,560 L1100,560 L1100,620 L820,620Z', 1.6, .6) + pope(960, 560, 100, { pose: 'wave2' }) +
         rect(360, 360, 180, 110, '#2f3a5e') + rect(1380, 360, 180, 110, '#2f3a5e') + ink('M360,360 L540,360 L540,470 L360,470Z M1380,360 L1560,360 L1560,470 L1380,470Z', 1.6, .6) + cross(450, 450, 70, '#fbf8f1', 8) + cross(1470, 450, 70, '#fbf8f1', 8);
       return layer(0, sky([[0, '#070d24'], [.6, '#1a2350'], [1, '#2e2e5a']]) + stars(292, 180, 500)) +
         layer(.2, `<g id="beams">${[-1, 1].map(sd => [0, 1, 2].map(i => path(`M${960 + sd * (380 + i * 60)},700 L${960 + sd * (80 + i * 260)},-200 L${960 + sd * (200 + i * 260)},-200Z`, '#fff4d0', 'opacity=".12"')).join('')).join('')}</g>`) +

@@ -1,6 +1,6 @@
 /* Escenas: introducción, estrofa 1 y estrofa 2 */
 (() => {
-  const { label, grass, hatch, bricks, windowBox, tree, ink, W, H, RNG, C, g, path, rect, circle, ellipse, line, poly, paper, layer, sky, glow, rays, solDeMayo, clouds, mountains, hills, waves, person, shade, crowd, flag, dove, cross, f1 } = LIB;
+  const { pope, label, grass, hatch, bricks, windowBox, tree, ink, W, H, RNG, C, g, path, rect, circle, ellipse, line, poly, paper, layer, sky, glow, rays, solDeMayo, clouds, mountains, hills, waves, person, shade, crowd, flag, dove, cross, f1 } = LIB;
   const S = window.SCENES;
   const q = (s, sel) => s.el.querySelector(sel);
   const qa = (s, sel) => [...s.el.querySelectorAll(sel)];
@@ -253,30 +253,70 @@
     update(t, u, p, s) { q(s, '#net').setAttribute('transform', `translate(0 ${f1(-u * 14)})`); },
   });
 
-  // ================================================================= E2 · L6  el siervo de los siervos de Dios (55.5)
-  // Viernes Santo: figura de blanco, descalza, con la cruz al hombro; arcos del Coliseo y velas
+  // ================================================================= E2 · L6a  el siervo de los siervos de Dios (55.5) — Jueves Santo: el lavatorio de los pies
+  // (Jueves Santo 2026, San Juan de Letrán: León XIV lavó los pies a 12 sacerdotes con una jarra dorada y un paño blanco)
   S.push({
-    id: 'siervo', at: 55.5, cam: { x0: 80, y0: 0, z0: 1.02, x1: -80, y1: -10, z1: 1.08 },
+    id: 'lavatorio', at: 55.5, cam: { x0: 30, y0: -80, z0: 1.0, x1: -30, y1: -110, z1: 1.08, ease: 'inOutSine' },
+    build() {
+      let cols = '';
+      for (let i = 0; i < 8; i++) { const x = -120 + i * 300; cols += rect(x, 60, 80, 820, '#e9dcc4') + ink(`M${x + 20},70 L${x + 20},880 M${x + 40},70 L${x + 40},880 M${x + 60},70 L${x + 60},880`, 1.2, .3) + rect(x - 14, 50, 108, 30, '#d8c8a8') + (i < 7 ? path(`M${x + 80},300 Q${x + 190},160 ${x + 300},300 L${x + 300},320 Q${x + 190},185 ${x + 80},320Z`, '#d8c8a8') : ''); }
+      let wins = ''; for (let i = 0; i < 7; i++) wins += windowBox(70 + i * 300, 110, 70, 150, { glass: '#f7d98a', frame: '#e9dcc4', arch: true });
+      // sacerdotes en los bancos del fondo (esperan su turno)
+      const pews = [...Array(12)].map((_, i) => person(-120 + i * 190, 900, 250, { color: '#f7f4ee', robe: true, pose: 'pray', skin: C.skin[i % 5], hair: C.hair[i % 6], style: ['short', 'bald', 'short', 'curly'][i % 4] })).join('') +
+        rect(-300, 800, W + 600, 30, '#7a5534') + rect(-300, 830, W + 600, 120, '#8a6040') + ink('M-300,800 L2220,800 M-300,830 L2220,830', 1.8, .6);
+      // sacerdote sentado de perfil, con el pie descalzo sobre la jofaina
+      const alb = 'M548,600 Q575,548 628,552 Q668,566 676,640 L672,776 L790,772 Q812,776 814,800 L842,958 L792,966 L770,826 L548,832Z';
+      const priest = rect(470, 520, 26, 330, '#7a5534') + rect(470, 820, 250, 22, '#7a5534') + rect(480, 842, 16, 150, '#5a3b26') + rect(700, 842, 16, 150, '#5a3b26') +
+        path(alb, '#f7f4ee') + path('M640,560 Q668,566 676,640 L672,776 L700,776 L700,640Z', '#e3ddd1', 'opacity=".7"') + ink(alb, 1.8, .6) + ink('M600,620 Q590,720 600,820 M700,790 Q760,800 800,960', 1.3, .4) +
+        ellipse(842, 978, 42, 13, C.skin[1]) + ink('M806,978 q36,-16 76,-2', 1.4, .6) + rect(590, 500, 30, 60, C.skin[1]) +
+        circle(606, 470, 46, C.skin[1]) + path('M562,468 Q560,418 606,414 Q650,414 652,450 Q620,432 592,446 Q576,460 562,468Z', C.hair[0]) + path('M650,470 L668,486 L650,494Z', C.skin[1]) + circle(630, 462, 3, INK) + ink('M628,500 q10,4 18,-2', 1.4, .6) +
+        poly([[620, 610], [660, 700], [730, 760]], '#f7f4ee', 30) + circle(740, 762, 16, C.skin[1]);
+      const basin = ellipse(860, 1000, 150, 40, '#c9a24a') + ellipse(860, 988, 130, 28, '#8fb8d8') + ink('M710,1000 Q860,1070 1010,1000', 2, .6) + ink('M760,990 q20,-6 40,0 M880,996 q20,-6 40,0', 1.4, .5);
+      return layer(0, rect(-300, -300, W + 600, H + 600, '#b89a70') + glow(960, 200, 1000, '#ffe6b0', .8)) +
+        layer(.15, wins + `<g id="lbeams">${rays(960, -300, 200, 1800, 10, '#fff4d0', .16, 4)}</g>`) +
+        layer(.3, paper(cols) + rect(-300, 870, W + 600, 400, '#c9b28a')) +
+        layer(.5, pews) +
+        layer(.85, rect(-300, 950, W + 600, 300, '#c9b28a') + [...Array(6)].map((_, i) => ink(`M-300,${960 + i * 24} L2220,${960 + i * 24}`, 1.2, .25)).join('') + priest + basin + `<g id="popew"></g>`);
+    },
+    update(t, u, p, s) {
+      const pour = (Math.sin(u * 2.2) + 1) / 2;
+      const px = 1150, py = 1050, h = 620, uu = h / 100;
+      let g2 = pope(px, py, h, { pose: 'wash', alb: true, turn: .55, flip: true });
+      // jarra dorada en la mano derecha, inclinándose, y el chorro de agua sobre el pie
+      const jx = px - 25.8 * uu - 10, jy = py - 40 * uu - 30 + pour * 8, ang = 20 + pour * 38;
+      g2 += `<g transform="translate(${f1(jx)},${f1(jy)}) rotate(${f1(ang)})">${path('M-24,-44 L24,-44 L30,34 Q0,48 -30,34Z', '#e0b040')}${path('M-24,-38 Q-60,-44 -48,-8', 'none', 'stroke="#c98a1b" stroke-width="8"')}${path('M24,-44 L50,-58 L20,-32Z', '#e0b040')}${ink('M-24,-44 L24,-44 L30,34 Q0,48 -30,34Z', 1.6, .6)}${ink('M-26,-10 L28,-10', 1.2, .4)}</g>`;
+      const sx0 = jx - 40 - pour * 16, sy0 = jy - 50 + pour * 16;
+      if (pour > .3) g2 += path(`M${f1(sx0)},${f1(sy0)} Q${f1(sx0 - 40)},${f1(sy0 + 80)} 850,965`, 'none', `stroke="#d4ebf6" stroke-width="${f1(3 + pour * 7)}" stroke-linecap="round" opacity=".9"`) + [0, 1, 2].map(i => circle(840 + i * 16 + Math.sin(t * 9 + i) * 4, 962 - i * 6, 4, '#d4ebf6', 'opacity=".8"')).join('');
+      // paño blanco sobre el brazo izquierdo
+      const cx = px - 12.2 * uu, cy = py - 26 * uu;
+      g2 += path(`M${f1(cx - 40)},${f1(cy - 20)} L${f1(cx + 30)},${f1(cy - 30)} L${f1(cx + 40)},${f1(cy + 70)} L${f1(cx - 30)},${f1(cy + 80)}Z`, '#fdfbf4') + ink(`M${f1(cx - 40)},${f1(cy - 20)} L${f1(cx + 30)},${f1(cy - 30)} L${f1(cx + 40)},${f1(cy + 70)} L${f1(cx - 30)},${f1(cy + 80)}Z M${f1(cx - 20)},${f1(cy)} L${f1(cx - 14)},${f1(cy + 70)}`, 1.4, .5);
+      q(s, '#popew').innerHTML = g2;
+      q(s, '#lbeams').setAttribute('opacity', f1(.75 + .25 * Math.sin(u * 1.2)));
+    },
+  });
+
+  // ================================================================= E2 · L6b  (58.6) — Viernes Santo: la cruz en el Coliseo
+  // (Viernes Santo 2026: León XIV cargó una cruz liviana de madera por las 14 estaciones, de noche, entre antorchas)
+  S.push({
+    id: 'siervo', at: 58.6, cam: { x0: 60, y0: 0, z0: 1.0, x1: -40, y1: -30, z1: 1.1 },
     build() {
       let arches = '';
       for (let row = 0; row < 3; row++) for (let i = 0; i < 16; i++) { const x = -200 + i * 150, y = 200 + row * 150; arches += path(`M${x},${y + 140} L${x},${y + 50} Q${x + 55},${y - 10} ${x + 110},${y + 50} L${x + 110},${y + 140}Z`, '#10162c'); }
       const colosseum = rect(-300, 180, W + 600, 480, '#3a3350') + bricks(-300, 180, W + 600, 480, { bw: 70, bh: 28, op: .3, seed: 73 }) + arches + ink('M-300,340 L2220,340 M-300,490 L2220,490 M-300,640 L2220,640', 2.4, .6);
       const r = RNG(71); let candles = '';
       for (let i = 0; i < 90; i++) { const x = r.range(-300, W + 300), y = r.range(760, 860); candles += g(glow(x, y - 14, 26, '#ffd98a', .7) + rect(x - 2, y - 10, 4, 14, '#f4efe6') + ellipse(x, y - 14, 3, 6, '#ffe7a0'), 'class="cd"'); }
-      const walker = g(
-        person(0, 0, 330, { color: C.robe, robe: true, pose: 'carry', skin: C.skin[0], hair: '#d8d2c8', cap: '#fbf8f1', back: true }) +
-        // cruz de madera sobre el hombro
-        `<g transform="translate(22,-260) rotate(28)">${rect(-12, -40, 24, 360, '#7a5534')}${rect(-90, 20, 180, 22, '#7a5534')}</g>` +
-        // pies descalzos
-        ellipse(-14, 2, 14, 6, C.skin[0]) + ellipse(16, 2, 14, 6, C.skin[0]), 'id="walker"');
-      return layer(0, sky([[0, '#0b1024'], [.6, '#1d2345'], [1, '#2c2a4a']]) + circle(1560, 180, 60, '#f3efe0') + glow(1560, 180, 200, '#cfd6ff', .35)) +
+      return layer(0, sky([[0, '#0b1024'], [.6, '#1d2345'], [1, '#2c2a4a']]) + circle(1560, 150, 60, '#f3efe0') + glow(1560, 150, 200, '#cfd6ff', .35)) +
         layer(.3, paper(colosseum)) +
-        layer(.55, crowd(72, 60, -300, W + 300, 700, 820, 60, 110, { colors: ['#2b2f48', '#353a58', '#2a2d44'], pose: 'pray', children: .1, back: true }) + candles) +
-        layer(.8, `<g transform="translate(980,930)">${walker}</g>`) +
-        layer(1, rect(-300, 960, W + 600, 300, '#141627') + glow(980, 900, 380, '#fff4d6', .25));
+        layer(.55, crowd(72, 60, -300, W + 300, 700, 820, 60, 110, { colors: ['#2b2f48', '#353a58', '#2a2d44'], pose: 'pray', children: .1 }) + candles) +
+        layer(.85, `<g id="walk"></g>`) +
+        layer(1, rect(-300, 1000, W + 600, 300, '#141627'));
     },
     update(t, u, p, s) {
-      const w = q(s, '#walker'); w.setAttribute('transform', `translate(${f1(-140 + u * 38)} ${f1(Math.abs(Math.sin(u * 2.2)) * -6)})`);
+      const k = u / 7, x = 900 + k * 90, y = 1010 + k * 30, h = 470 + k * 60, bob = Math.abs(Math.sin(u * 2.2)) * -5;
+      const torch = (tx, ty, th, i) => person(tx, ty, th, { color: '#2b2f48', robe: true, pose: 'reach', skin: C.skin[i], hair: C.hair[i], flip: i === 1 }) +
+        line(tx + (i === 1 ? -1 : 1) * th * .24, ty - th * .72, tx + (i === 1 ? -1 : 1) * th * .28, ty - th * 1.05, '#6b4630', 6) +
+        glow(tx + (i === 1 ? -1 : 1) * th * .28, ty - th * 1.1, 90, '#ffb84a', .8) + path(`M${f1(tx + (i === 1 ? -1 : 1) * th * .28 - 12)},${f1(ty - th * 1.05)} Q${f1(tx + (i === 1 ? -1 : 1) * th * .28 + Math.sin(t * 9 + i) * 6)},${f1(ty - th * 1.2)} ${f1(tx + (i === 1 ? -1 : 1) * th * .28 + 12)},${f1(ty - th * 1.05)}Z`, '#ffcf5a');
+      q(s, '#walk').innerHTML = torch(x - 330, y - 30, 380, 0) + torch(x + 320, y - 30, 380, 1) + `<g transform="translate(0 ${f1(bob)})">${pope(x, y, h, { pose: 'carry', turn: .25 })}</g>` + glow(x, y - h * .6, 420, '#ffd89a', .18);
       qa(s, '.cd').forEach((c, i) => c.setAttribute('opacity', f1(.75 + .25 * Math.sin(t * 7 + i * 1.7))));
     },
   });
@@ -328,7 +368,7 @@
 
   // ================================================================= E2 · L8  a escuchar al peregrino de la paz (66.8)
   S.push({
-    id: 'balcon', at: 66.8, cam: { x0: 0, y0: -60, z0: 1.18, x1: 0, y1: 30, z1: 1.0, ease: 'inOutSine' },
+    id: 'balcon', at: 66.8, cam: { x0: 0, y0: 40, z0: 1.0, x1: 0, y1: 90, z1: 1.75, ease: 'inOutSine' },
     build() {
       let cols = '';
       for (let i = 0; i < 10; i++) cols += rect(160 + i * 170, 120, 56, 560, '#e9dfcc') + ink(`M${172 + i * 170},130 L${172 + i * 170},680 M${188 + i * 170},130 L${188 + i * 170},680 M${204 + i * 170},130 L${204 + i * 170},680`, 1.2, .3) + rect(150 + i * 170, 110, 76, 22, '#d8ccb4');
@@ -336,10 +376,10 @@
         // loggia central
         path('M780,700 L780,330 Q960,200 1140,330 L1140,700Z', '#2b2438') +
         rect(740, 640, 440, 40, '#d8ccb4') + path('M800,640 L1120,640 L1100,720 L820,720Z', '#b8323a') + path('M820,660 L1100,660', 'none', 'stroke="#ffd98a" stroke-width="4"');
-      const pope = person(960, 650, 230, { color: C.robe, robe: true, pose: 'bless', skin: C.skin[0], hair: '#d8d2c8', cap: '#fbf8f1', back: true, cape: '#f7f4ee' });
+      const leo = pope(960, 700, 330, { pose: 'bless', mozzetta: true });
       return layer(0, sky([[0, '#7fb0e0'], [1, '#e8f1f8']])) +
         layer(.2, paper(facade)) +
-        layer(.35, g(pope, 'id="pope"') + glow(960, 480, 300, '#fff4d0', .45) + `<g id="brays">${rays(960, 450, 120, 1300, 24, '#fff7dc', .16, 6)}</g>`) +
+        layer(.35, glow(960, 480, 300, '#fff4d0', .45) + g(leo, 'id="pope"') + rect(740, 640, 440, 40, '#d8ccb4') + path('M800,640 L1120,640 L1100,720 L820,720Z', '#b8323a') + path('M820,660 L1100,660', 'none', 'stroke="#ffd98a" stroke-width="4"') + ink('M740,640 L1180,640 L1180,680 L740,680Z M800,680 L820,720 L1100,720 L1120,680', 1.6, .6) + solDeMayo(960, 690, 0.001) + `<g id="brays">${rays(960, 450, 120, 1300, 24, '#fff7dc', .16, 6)}</g>`) +
         layer(.6, `<g id="doves"></g>`) +
         layer(.9, crowd(91, 70, -300, W + 300, 900, 1120, 150, 260, { back: true, pose: (r) => r.pick(['raise', 'wave', 'stand', 'raise']), children: 0 }));
     },
