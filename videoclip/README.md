@@ -9,9 +9,12 @@ acuarela y papel. La letra aparece sincronizada palabra por palabra.
 
 | Archivo | Uso |
 |---|---|
-| `seamos-uno-videoclip.mp4` | Versión para subir a YouTube (máxima calidad, audio AAC 320k) |
-| `seamos-uno-videoclip-liviano.mp4` | Versión liviana para WhatsApp / revisar en el celular |
+| `seamos-uno-videoclip.mp4` | Versión para subir a YouTube (1080p, ~95 MB, audio AAC 192k) |
+| `seamos-uno-videoclip-whatsapp.mp4` | Versión 720p de menos de 30 MB para compartir por WhatsApp |
 | `miniatura.jpg` | Miniatura sugerida para YouTube |
+
+La versión de máxima calidad (~300 MB) se genera con `build.sh` / `assemble.sh`, pero no se
+sube al repositorio porque supera el límite de 100 MB de GitHub.
 
 ## Sincronización de la letra
 
