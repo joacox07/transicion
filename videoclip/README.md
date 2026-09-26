@@ -26,8 +26,8 @@ El mensaje de voz con las indicaciones está transcripto en `indicaciones-tia.md
 |---|---|---|
 | 0:00 | (introducción) | Amanecer sobre la cordillera, sale el Sol de Mayo, palomas; título «SEAMOS UNO» y «Visita del Papa León XIV a la Argentina · 2026» |
 | 0:28 | Desde las montañas hasta el mar | El Aconcagua; la cámara baja hasta la costa patagónica, el faro y una ballena |
-| 0:33 | hay un pueblo queriendo despertar | Panorámica al amanecer: ciudad y puente → cerros de colores de Jujuy → selva y cataratas de Misiones |
-| 0:39 | hombres y mujeres de buena voluntad | Trabajo en el campo: cosecha, gaucho con su caballo, molino y tanque australiano |
+| 0:33 | hay un pueblo queriendo despertar | Panorámica al amanecer: Buenos Aires y el Puente de la Mujer → Cerro de los Siete Colores y Purmamarca (Jujuy) → Garganta del Diablo, palmeras y tucán (Misiones) |
+| 0:39 | hombres y mujeres de buena voluntad | La pampa en movimiento: un agricultor carpe, una mujer cosecha tomates, un chico corre, el gaucho lleva su caballo, otro carga un cajón de frutas; el tractor cruza al fondo, gira el molino |
 | 0:44 | oyendo el llamado de su identidad | Vitral (estilo catedral de Rosario): Belgrano iza la bandera junto al río |
 | 0:50 | Llega el sucesor del pescador | Barca y redes llenas de peces al amanecer; las llaves de Pedro en el cielo |
 | 0:56 | el siervo de los siervos de Dios | Viernes Santo: figura de blanco, descalza, con la cruz al hombro; velas y arcos del Coliseo |
@@ -58,6 +58,10 @@ El mensaje de voz con las indicaciones está transcripto en `indicaciones-tia.md
 | 3:23 | Con María seamos uno | El manto celeste y blanco de la Virgen se abre sobre su pueblo |
 | 3:29 | Que en el Uno seamos uno | Mosaico con todas las escenas que se funden en la luz: «SEAMOS UNO» |
 | 3:37 | (créditos) | Créditos con la foto del equipo de grabación al costado |
+
+Los lugares reales llevan un pequeño rótulo manuscrito, como en un cuaderno de viaje
+(Aconcagua, Quebrada de Humahuaca – Jujuy, Cataratas del Iguazú – Misiones, Plaza de Mayo, Basílica de Luján…),
+para que se entienda cada imagen.
 
 El Papa y las personas aparecen siempre como figuras dibujadas (de espaldas, de lejos o
 estilizadas), nunca como retrato.

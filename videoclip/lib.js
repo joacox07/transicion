@@ -238,7 +238,9 @@ function person(x, y, h, o = {}) {
     wave: () => { const a = [[L[0] - 2 * u, L[1] + 16 * u], [L[0] - 1 * u, L[1] + 32 * u]], b = [[R[0] + 9 * u, R[1] - 10 * u], [R[0] + 10 * u + Math.sin(ph * 2) * 5 * u, R[1] - 27 * u]]; return A([L, ...a]) + A([R, ...b], shade(sl, -.12)) + hand(a[1]) + hand(b[1]); },
     carry: () => { const a = [[L[0] + 4 * u, L[1] + 12 * u], [R[0] + 1 * u, R[1] - 3 * u]], b = [[R[0] + 5 * u, R[1] + 10 * u], [R[0] + 4 * u, R[1] - 5 * u]]; return A([L, ...a]) + A([R, ...b], shade(sl, -.12)) + hand(a[1]) + hand(b[1]); },
   };
-  const arms = (armsFor[pose] || armsFor.stand)();
+  // brazos a medida (para animar trabajos): o.armsPts = { l: [[dx,dy],[dx,dy]], r: [...] } en unidades de altura/100 desde cada hombro
+  if (o.armsPts) armsFor.custom = () => { const a = o.armsPts.l.map(([dx, dy2]) => [L[0] + dx * u, L[1] + dy2 * u]), b = o.armsPts.r.map(([dx, dy2]) => [R[0] + dx * u, R[1] + dy2 * u]); return A([R, ...b], shade(sl, -.12)) + hand(b[b.length - 1]) + A([L, ...a]) + hand(a[a.length - 1]); };
+  const arms = (armsFor[o.armsPts ? 'custom' : pose] || armsFor.stand)();
   // ---- cuello y cabeza
   let head = rect(x - 2.4 * u, hy + hr * .6, 4.8 * u, 5 * u, shade(skin, -.08)) + circle(x, hy, hr, skin);
   if (!o.back && det) head += ellipse(x - hr * .98, hy + 1 * u, 1.6 * u, 2.4 * u, shade(skin, -.1)) + ellipse(x + hr * .98, hy + 1 * u, 1.6 * u, 2.4 * u, shade(skin, -.1));
@@ -358,6 +360,18 @@ function tree(x, y, s, c, seed = 1) {
     blobs + `<path d="${scrib}" fill="none" stroke="${shade(c, -.4)}" stroke-width="1.6" opacity=".35"/>`, `transform="translate(${f1(x)},${f1(y)}) scale(${s})"`);
 }
 
+
+/** rótulo manuscrito (cuaderno de viaje) con subrayado y flechita opcional */
+function label(x, y, text, { size = 74, rot = -3, arrow = null, color = '#2b211c', sub = null } = {}) {
+  const w = text.length * size * .42;
+  let s = `<g transform="translate(${f1(x)},${f1(y)}) rotate(${rot})">` +
+    `<text x="0" y="0" text-anchor="middle" font-family="Caveat" font-weight="700" font-size="${size}" fill="${color}">${text}</text>` +
+    `<path d="M${f1(-w / 2)},${f1(size * .22)} Q0,${f1(size * .34)} ${f1(w / 2)},${f1(size * .18)}" fill="none" stroke="${color}" stroke-width="2.4" stroke-linecap="round" opacity=".8"/>`;
+  if (sub) s += `<text x="0" y="${f1(size * .95)}" text-anchor="middle" font-family="Caveat" font-weight="600" font-size="${f1(size * .62)}" fill="${color}" opacity=".85">${sub}</text>`;
+  if (arrow) { const [ax, ay] = arrow; s += `<path d="M${f1(ax > 0 ? w / 2 + 10 : -w / 2 - 10)},${f1(-size * .2)} Q${f1(ax * .6)},${f1(ay * .2 - size * .6)} ${f1(ax)},${f1(ay)}" fill="none" stroke="${color}" stroke-width="2.6" stroke-linecap="round"/><path d="M${f1(ax - 12)},${f1(ay - 12)} L${f1(ax)},${f1(ay)} L${f1(ax + (ax > 0 ? -2 : 14))},${f1(ay - 18)}" fill="none" stroke="${color}" stroke-width="2.6" stroke-linecap="round"/>`; }
+  return s + '</g>';
+}
+
 // ------------------------------------------------------------------ texturas globales (una sola vez)
 function paperTexture(seed = 3) {
   const cv = document.createElement('canvas'); cv.width = W; cv.height = H;
@@ -370,4 +384,4 @@ function paperTexture(seed = 3) {
   return cv.toDataURL('image/jpeg', .9);
 }
 
-window.LIB = { grass, hatch, bricks, windowBox, tree, ink, INK, W, H, RNG, C, g, path, rect, circle, ellipse, line, poly, paper, layer, sky, glow, rays, solDeMayo, clouds, mountains, hills, waves, person, shade, crowd, flag, dove, cross, paperTexture, f1 };
+window.LIB = { label, grass, hatch, bricks, windowBox, tree, ink, INK, W, H, RNG, C, g, path, rect, circle, ellipse, line, poly, paper, layer, sky, glow, rays, solDeMayo, clouds, mountains, hills, waves, person, shade, crowd, flag, dove, cross, paperTexture, f1 };

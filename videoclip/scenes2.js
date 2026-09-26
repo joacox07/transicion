@@ -1,6 +1,6 @@
 /* Escenas: estribillo 1, estrofa 3 y estrofa 4 */
 (() => {
-  const { grass, hatch, bricks, windowBox, tree, ink, W, H, RNG, C, g, path, rect, circle, ellipse, line, poly, paper, layer, sky, glow, rays, solDeMayo, clouds, mountains, hills, waves, person, shade, crowd, flag, dove, cross, f1 } = LIB;
+  const { label, grass, hatch, bricks, windowBox, tree, ink, W, H, RNG, C, g, path, rect, circle, ellipse, line, poly, paper, layer, sky, glow, rays, solDeMayo, clouds, mountains, hills, waves, person, shade, crowd, flag, dove, cross, f1 } = LIB;
   const S = window.SCENES;
   const q = (s, sel) => s.el.querySelector(sel);
   const qa = (s, sel) => [...s.el.querySelectorAll(sel)];
@@ -57,7 +57,7 @@
         layer(.3, paper(casa) + rect(-300, 598, W + 600, 20, '#b8ad9c')) +
         layer(.45, paper(piramide) + rect(-300, 640, W + 600, 600, '#cfc4b2') + [...Array(14)].map((_, i) => ink(`M${-300 + i * 180},640 L${-900 + i * 300},1200`, 1.2, .3)).join('') + [...Array(6)].map((_, i) => ink(`M-300,${680 + i * 70} L2220,${680 + i * 70}`, 1.2, .25)).join('')) +
         layer(.75, crowd(103, 170, -300, W + 300, 650, 1080, 40, 190, { back: true, pose: r => r.pick(['raise', 'wave', 'stand', 'raise', 'stand']), children: .15 }) + `<g id="flags"></g>`) +
-        layer(1, glow(960, 300, 700, '#fff6dc', .25));
+        layer(1, glow(960, 300, 700, '#fff6dc', .25) + label(1640, 140, 'Plaza de Mayo', { sub: 'Buenos Aires', rot: 3 }));
     },
     update(t, u, p, s) { q(s, '#flags').innerHTML = drawFlags(fl1, t); },
   });
@@ -78,7 +78,7 @@
       const obelisk = path('M946,860 L952,560 L968,560 L974,860Z', '#e9e0cc') + path('M952,560 L960,540 L968,560Z', '#e9e0cc') + cross(960, 540, 22, C.gold, 3);
       return layer(0, sky([[0, '#8fb9e6'], [.6, '#f4dcb8'], [1, '#fbe9cc']])) +
         layer(.1, glow(960, 150, 600, '#fff4d8', .6)) +
-        layer(.3, paper(dome + facade)) +
+        layer(.3, paper(dome + facade) + label(1560, 200, 'Plaza de San Pedro', { sub: 'Roma', rot: 3 })) +
         layer(.5, paper(colonnade) + path('M300,640 Q960,560 1620,640 L1800,1200 L120,1200Z', '#d9ccb3') + ellipse(960, 860, 700, 150, '#cfc0a4')) +
         layer(.62, paper(obelisk)) +
         layer(.78, crowd(111, 260, 160, 1760, 700, 1000, 14, 60, { pose: r => r.pick(['stand', 'raise', 'wave']), children: .1 })) +
@@ -98,7 +98,7 @@
         path('M900,660 L900,520 Q960,460 1020,520 L1020,660Z', '#6b5a48') + rect(640, 650, 640, 30, bd);
       return layer(0, sky([[0, '#5b86c5'], [.55, '#c9b7d9'], [1, '#f7dcc0']])) +
         layer(.1, glow(960, 300, 700, '#fff0cf', .55) + clouds(121, 5, 80, 300, '#fff', .6)) +
-        layer(.35, paper(basilica) + rect(-300, 676, W + 600, 600, '#c6b89e')) +
+        layer(.35, paper(basilica) + rect(-300, 676, W + 600, 600, '#c6b89e') + label(1560, 240, 'Basílica de Luján', { sub: 'Nuestra Señora de Luján', rot: 3 })) +
         layer(.55, `<g id="lflags"></g>`) +
         layer(.7, crowd(122, 90, -300, W + 300, 700, 900, 40, 120, { back: true, pose: 'walk', colors: [C.celeste, '#fbf8f1', ...C.cloth.slice(0, 5)] })) +
         layer(.9, paper(virgenLujan(330, 1020, 520)) + glow(330, 760, 380, '#fff4d0', .4)) +
