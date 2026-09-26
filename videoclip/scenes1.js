@@ -49,7 +49,6 @@
     build() {
       return layer(0, sky([[0, '#6f9fd6'], [.5, '#bcd7ee'], [1, '#f7e3c4']])) +
         layer(.1, clouds(21, 7, -200, 200, '#fff', .75)) +
-        layer(.35, label(1080, -150, 'Aconcagua', { sub: 'Mendoza · 6.961 m', rot: -3 })) +
         // Aconcagua: cumbre dominante con nieve
         layer(.35, paper(mountains(22, 420, 120, '#7d6f86', { peaks: [[-100, 120], [320, -40], [700, -260], [1010, -60], [1400, 40], [1900, 120]], snow: { frac: .34, color: '#f6f7fb' }, rough: .5 }))) +
         layer(.5, paper(mountains(23, 560, 80, '#9b7f6a', { peaks: [[0, 330], [500, 250], [1000, 330], [1500, 260], [2100, 340]], rough: .45 }))) +
@@ -59,7 +58,7 @@
         layer(.92, waves(1000, C.sea, { amp: 8, len: 160 }) + waves(1080, C.seaD, { amp: 10, len: 200, phase: 1 }) + `<g id="spark"></g>` +
           waves(1180, '#1a3f62', { amp: 12, len: 240, phase: 2 }) +
           // faro patagónico
-          label(1200, 780, 'Mar Argentino', { sub: 'Patagonia', rot: 2 }) + paper(g(rect(1480, 820, 34, 150, '#f4efe6') + rect(1480, 850, 34, 18, '#c0413a') + rect(1480, 900, 34, 18, '#c0413a') + path('M1474,822 L1497,796 L1520,822Z', '#c0413a') + rect(1470, 966, 54, 12, '#6b5a48')))) +
+          paper(g(rect(1480, 820, 34, 150, '#f4efe6') + rect(1480, 850, 34, 18, '#c0413a') + rect(1480, 900, 34, 18, '#c0413a') + path('M1474,822 L1497,796 L1520,822Z', '#c0413a') + rect(1470, 966, 54, 12, '#6b5a48')))) +
         layer(.97, [...Array(10)].map((_, i) => ink(`M${-100 + i * 220},${1030 + (i % 3) * 50} q30,-10 60,0 q30,10 60,0`, 2, .45)).join('') + [...Array(5)].map((_, i) => ink(`M${300 + i * 260},${860 - i * 30} q14,-12 28,0 q14,-12 28,0`, 2.2, .7)).join('')) +
         layer(1, `<g id="whale">${path('M0,0 Q60,-40 140,-8 Q170,-2 190,-30 Q186,-6 200,10 Q170,4 140,14 Q60,30 0,0Z', '#1a3350')}</g>`);
     },
@@ -117,10 +116,7 @@
           [...Array(12)].map((_, i) => ink(`M${440 + i * 90},${f1(560 + Math.abs(i - 6) * 26)} q${r.range(-10, 10)},60 ${r.range(-20, 20)},140`, 1.4, .35)).join('') +
           path('M300,780 Q900,760 1560,790 L1560,1200 L300,1200Z', '#c9a27a') + village + iglesia +
           path('M1500,800 Q2000,780 2600,800 L2600,1200 L1500,1200Z', '#b5532f') + jungle + cliff + falls + mist + rainbow + path('M1560,840 Q2040,820 2560,840 L2560,1000 L1560,1000Z', '#6f8a6a') + waves(850, '#88a484', { amp: 4, len: 50, x0: 1560, x1: 2560, bottom: 1000 }) +
-          palm(1560, 900, 260, -30) + palm(2540, 910, 280, 40) + palm(2360, 930, 200, 20) + toucan +
-          label(-160, 230, 'Buenos Aires', { sub: 'amanece sobre el río', rot: -4 }) +
-          label(930, 200, 'Quebrada de Humahuaca', { sub: 'Jujuy', rot: -3 }) +
-          label(2040, 270, 'Cataratas del Iguazú', { sub: 'Misiones', rot: 3 })) +
+          palm(1560, 900, 260, -30) + palm(2540, 910, 280, 40) + palm(2360, 930, 200, 20) + toucan) +
         layer(.85, cardon(470, 990, 190) + cardon(640, 1010, 150) + cardon(1280, 1000, 210) + cardon(1420, 990, 140) + fern(1640, 1010, 1.4) + fern(1820, 1030, 1.1) + fern(2300, 1020, 1.5)) +
         layer(1, paper(hills(34, 1040, 24, '#3b3326', { x0: -1400, x1: 3300 })) + grass(35, 300, -1400, 3300, 1030, 1090, '#2a2218', .7));
     },
@@ -155,7 +151,7 @@
         layer(.25, clouds(42, 5, 120, 380, '#fff', .8) + `<g id="birds"></g>`) +
         layer(.4, paper(hills(43, 700, 26, '#a9b36a')) + `<g id="tractor"></g>`) +
         layer(.5, molino) +
-        layer(.55, paper(hills(44, 780, 20, '#c7a24c')) + fence + label(420, 470, 'la pampa', { sub: 'manos que trabajan la tierra', rot: -4, size: 66 })) +
+        layer(.55, paper(hills(44, 780, 20, '#c7a24c')) + fence) +
         layer(.7, rows) +
         layer(.78, `<g id="people"></g>`) +
         layer(1, `<g id="wheat">${wheat}</g>` + grass(45, 200, -300, W + 300, 1000, 1090, '#8a6a2a', .7));
@@ -229,7 +225,7 @@
       return layer(0, rect(-300, -300, W + 600, H + 600, '#1d1a24') + glow(960, 500, 900, '#6b5a8a', .35)) +
         layer(.2, [...Array(10)].map((_, i) => rect(90 + i * 180, 0, 26, H, '#262230')).join('')) +
         layer(.6, glass + `<g opacity=".55" style="mix-blend-mode:screen">${leads}</g>` + leads + frame + `<g id="beams">${rays(960, 300, 300, 1600, 14, '#fff3d6', .10, 7)}</g>`) +
-        layer(.8, glow(960, 1000, 520, '#ffe8b0', .35) + label(1600, 250, 'Manuel Belgrano', { sub: 'la Bandera · Rosario', rot: 4, color: '#f4e6c8' }));
+        layer(.8, glow(960, 1000, 520, '#ffe8b0', .35));
     },
     update(t, u, p, s) { q(s, '#beams').setAttribute('opacity', .55 + .45 * Math.sin(u * 1.4)); },
   });
@@ -277,7 +273,7 @@
         layer(.3, paper(colosseum)) +
         layer(.55, crowd(72, 60, -300, W + 300, 700, 820, 60, 110, { colors: ['#2b2f48', '#353a58', '#2a2d44'], pose: 'pray', children: .1, back: true }) + candles) +
         layer(.8, `<g transform="translate(980,930)">${walker}</g>`) +
-        layer(1, rect(-300, 960, W + 600, 300, '#141627') + glow(980, 900, 380, '#fff4d6', .25) + label(420, 150, 'Viernes Santo', { sub: 'Vía Crucis', rot: -3, color: '#f4e6c8' }));
+        layer(1, rect(-300, 960, W + 600, 300, '#141627') + glow(980, 900, 380, '#fff4d6', .25));
     },
     update(t, u, p, s) {
       const w = q(s, '#walker'); w.setAttribute('transform', `translate(${f1(-140 + u * 38)} ${f1(Math.abs(Math.sin(u * 2.2)) * -6)})`);

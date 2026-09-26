@@ -59,9 +59,8 @@ El mensaje de voz con las indicaciones está transcripto en `indicaciones-tia.md
 | 3:29 | Que en el Uno seamos uno | Mosaico con todas las escenas que se funden en la luz: «SEAMOS UNO» |
 | 3:37 | (créditos) | Créditos con la foto del equipo de grabación al costado |
 
-Los lugares reales llevan un pequeño rótulo manuscrito, como en un cuaderno de viaje
-(Aconcagua, Quebrada de Humahuaca – Jujuy, Cataratas del Iguazú – Misiones, Plaza de Mayo, Basílica de Luján…),
-para que se entienda cada imagen.
+Sin rótulos ni carteles: cada lugar se reconoce por el dibujo (por ejemplo, la Basílica de Luján con sus
+dos torres neogóticas, el rosetón y los tres portales).
 
 El Papa y las personas aparecen siempre como figuras dibujadas (de espaldas, de lejos o
 estilizadas), nunca como retrato.

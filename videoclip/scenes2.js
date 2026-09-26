@@ -57,7 +57,7 @@
         layer(.3, paper(casa) + rect(-300, 598, W + 600, 20, '#b8ad9c')) +
         layer(.45, paper(piramide) + rect(-300, 640, W + 600, 600, '#cfc4b2') + [...Array(14)].map((_, i) => ink(`M${-300 + i * 180},640 L${-900 + i * 300},1200`, 1.2, .3)).join('') + [...Array(6)].map((_, i) => ink(`M-300,${680 + i * 70} L2220,${680 + i * 70}`, 1.2, .25)).join('')) +
         layer(.75, crowd(103, 170, -300, W + 300, 650, 1080, 40, 190, { back: true, pose: r => r.pick(['raise', 'wave', 'stand', 'raise', 'stand']), children: .15 }) + `<g id="flags"></g>`) +
-        layer(1, glow(960, 300, 700, '#fff6dc', .25) + label(1640, 140, 'Plaza de Mayo', { sub: 'Buenos Aires', rot: 3 }));
+        layer(1, glow(960, 300, 700, '#fff6dc', .25));
     },
     update(t, u, p, s) { q(s, '#flags').innerHTML = drawFlags(fl1, t); },
   });
@@ -78,7 +78,7 @@
       const obelisk = path('M946,860 L952,560 L968,560 L974,860Z', '#e9e0cc') + path('M952,560 L960,540 L968,560Z', '#e9e0cc') + cross(960, 540, 22, C.gold, 3);
       return layer(0, sky([[0, '#8fb9e6'], [.6, '#f4dcb8'], [1, '#fbe9cc']])) +
         layer(.1, glow(960, 150, 600, '#fff4d8', .6)) +
-        layer(.3, paper(dome + facade) + label(1560, 200, 'Plaza de San Pedro', { sub: 'Roma', rot: 3 })) +
+        layer(.3, paper(dome + facade)) +
         layer(.5, paper(colonnade) + path('M300,640 Q960,560 1620,640 L1800,1200 L120,1200Z', '#d9ccb3') + ellipse(960, 860, 700, 150, '#cfc0a4')) +
         layer(.62, paper(obelisk)) +
         layer(.78, crowd(111, 260, 160, 1760, 700, 1000, 14, 60, { pose: r => r.pick(['stand', 'raise', 'wave']), children: .1 })) +
@@ -88,17 +88,36 @@
 
   // ================================================================= C1 · Con María seamos uno (83.9) — Basílica de Luján
   S.push({
-    id: 'lujan', at: 83.9, cam: { x0: 90, y0: 0, z0: 1.08, x1: -60, y1: -20, z1: 1.0 },
+    id: 'lujan', at: 83.9, cam: { x0: 80, y0: 170, z0: 1.04, x1: -60, y1: 120, z1: .98 },
     build() {
-      const b = '#e6e1d8', bd = '#c9c1b3';
-      const spire = x => rect(x - 55, 260, 110, 400, b) + bricks(x - 55, 270, 110, 390, { bw: 36, bh: 18, op: .22, seed: x }) + ink(`M${x - 55},260 L${x},20 L${x + 55},260 M${x - 28},150 L${x + 28},150`, 1.4, .5) + path(`M${x - 55},260 L${x},20 L${x + 55},260Z`, bd) + path(`M${x - 30},340 L${x - 30},300 Q${x},270 ${x + 30},300 L${x + 30},340Z`, '#6d7a9a') + cross(x, 20, 40, '#b8ad9c', 6) +
-        [...Array(3)].map((_, i) => path(`M${x - 40 + i * 30},${660 - 60} l0,-110 q15,-20 30,0 l0,110z`, '#8c93aa')).join('');
-      const basilica = spire(760) + spire(1160) + rect(815, 330, 290, 330, b) + path('M815,330 L960,190 L1105,330Z', bd) + circle(960, 390, 62, '#5f7fb8') + circle(960, 390, 62, 'none', `stroke="${bd}" stroke-width="10"`) +
-        [...Array(8)].map((_, i) => line(960, 390, 960 + Math.cos(i / 8 * 6.283) * 60, 390 + Math.sin(i / 8 * 6.283) * 60, bd, 4)).join('') +
-        path('M900,660 L900,520 Q960,460 1020,520 L1020,660Z', '#6b5a48') + rect(640, 650, 640, 30, bd);
+      // Basílica de Luján: neogótica, dos torres altísimas y caladas, rosetón y tres portales ojivales
+      const b = '#e6e1d8', bd = '#cbc2b3', dk = '#8c93aa';
+      const ojival = (x, y, w, h, fill = dk) => path(`M${x},${y + h} L${x},${y + w * .6} Q${x},${y} ${x + w / 2},${y - w * .35} Q${x + w},${y} ${x + w},${y + w * .6} L${x + w},${y + h}Z`, fill) + ink(`M${x},${y + h} L${x},${y + w * .6} Q${x},${y} ${x + w / 2},${y - w * .35} Q${x + w},${y} ${x + w},${y + w * .6} L${x + w},${y + h}`, 1.3, .6);
+      const pinaculo = (x, y, h) => path(`M${x - 7},${y} L${x},${y - h} L${x + 7},${y}Z`, bd) + ink(`M${x - 7},${y} L${x},${y - h} L${x + 7},${y}`, 1.1, .6);
+      const tower = x => {
+        let t = rect(x - 60, 330, 120, 350, b) + bricks(x - 60, 340, 120, 340, { bw: 40, bh: 18, op: .18, seed: x }) +
+          ink(`M${x - 60},330 L${x - 60},680 M${x + 60},330 L${x + 60},680 M${x - 40},340 L${x - 40},680 M${x + 40},340 L${x + 40},680`, 1.3, .45) +
+          ojival(x - 30, 400, 24, 90) + ojival(x + 6, 400, 24, 90) + ojival(x - 22, 540, 44, 110) +
+          // campanario octogonal
+          rect(x - 46, 190, 92, 145, b) + ojival(x - 36, 225, 30, 90) + ojival(x + 6, 225, 30, 90) + ink(`M${x - 46},190 L${x + 46},190 L${x + 46},335 L${x - 46},335Z`, 1.4, .6) +
+          pinaculo(x - 52, 190, 46) + pinaculo(x + 52, 190, 46) + pinaculo(x - 64, 330, 40) + pinaculo(x + 64, 330, 40) +
+          // aguja calada muy alta
+          path(`M${x - 46},190 L${x},-140 L${x + 46},190Z`, bd) + ink(`M${x - 46},190 L${x},-140 L${x + 46},190`, 1.6, .7);
+        for (let k = 0; k < 9; k++) { const yy = 170 - k * 34, hw = 46 * (yy + 140) / 330; t += ink(`M${f1(x - hw)},${f1(yy)} L${f1(x + hw)},${f1(yy)}`, 1.1, .5) + (k % 2 ? '' : ellipse(x, yy - 14, hw * .3, 8, dk, 'opacity=".7"')); }
+        for (let k = 0; k < 8; k++) { const yy = 160 - k * 36, hw = 46 * (yy + 140) / 330; t += ink(`M${f1(x - hw)},${f1(yy)} l-8,-6 M${f1(x + hw)},${f1(yy)} l8,-6`, 2, .7); } // crochets
+        return t + cross(x, -140, 34, '#8a7a66', 5);
+      };
+      let rose = circle(960, 400, 66, '#5f7fb8') + circle(960, 400, 66, 'none', `stroke="${bd}" stroke-width="10"`) + circle(960, 400, 22, '#e9c46a');
+      for (let i = 0; i < 12; i++) { const a2 = i / 12 * 6.283; rose += line(960 + Math.cos(a2) * 22, 400 + Math.sin(a2) * 22, 960 + Math.cos(a2) * 62, 400 + Math.sin(a2) * 62, bd, 3.5) + circle(960 + Math.cos(a2 + .26) * 44, 400 + Math.sin(a2 + .26) * 44, 9, ['#c9423a', '#74acdf', '#f2b632'][i % 3], 'opacity=".85"'); }
+      const nave = rect(820, 330, 280, 350, b) + path('M812,340 L960,190 L1108,340Z', bd) + ink('M812,340 L960,190 L1108,340', 1.8, .7) + pinaculo(960, 190, 40) + cross(960, 146, 26, '#8a7a66', 4) +
+        [...Array(7)].map((_, i) => ojival(846 + i * 34, 490, 20, 44)).join('') + rose +
+        ojival(900, 575, 120, 105, '#6b5a48') + ojival(836, 610, 50, 70, '#6b5a48') + ojival(1034, 610, 50, 70, '#6b5a48') +
+        ink('M890,680 L890,600 Q890,540 960,512 Q1030,540 1030,600 L1030,680', 1.6, .55) + ink('M960,590 L960,680', 1.4, .5);
+      const aisle = x => rect(x, 470, 130, 210, bd) + ojival(x + 20, 520, 34, 100) + ojival(x + 76, 520, 34, 100) + pinaculo(x, 470, 34) + pinaculo(x + 130, 470, 34) + ink(`M${x},470 L${x + 130},470`, 1.4, .6);
+      const basilica = aisle(570) + aisle(1220) + tower(760) + tower(1160) + nave + rect(560, 672, 800, 22, bd) + ink('M560,672 L1360,672', 1.4, .6) + [...Array(5)].map((_, i) => rect(600 + i * 4, 694 + i * 8, 720 - i * 8, 8, '#d8d0c0')).join('');
       return layer(0, sky([[0, '#5b86c5'], [.55, '#c9b7d9'], [1, '#f7dcc0']])) +
         layer(.1, glow(960, 300, 700, '#fff0cf', .55) + clouds(121, 5, 80, 300, '#fff', .6)) +
-        layer(.35, paper(basilica) + rect(-300, 676, W + 600, 600, '#c6b89e') + label(1560, 240, 'Basílica de Luján', { sub: 'Nuestra Señora de Luján', rot: 3 })) +
+        layer(.35, paper(basilica) + rect(-300, 676, W + 600, 600, '#c6b89e')) +
         layer(.55, `<g id="lflags"></g>`) +
         layer(.7, crowd(122, 90, -300, W + 300, 700, 900, 40, 120, { back: true, pose: 'walk', colors: [C.celeste, '#fbf8f1', ...C.cloth.slice(0, 5)] })) +
         layer(.9, paper(virgenLujan(330, 1020, 520)) + glow(330, 760, 380, '#fff4d0', .4)) +
@@ -107,7 +126,7 @@
   });
 
   S.find(x => x.id === 'lujan').update = (t, u, p, s) => {
-    q(s, '#lflags').innerHTML = [...Array(8)].map((_, i) => { const x = -160 + i * 300 + (i > 3 ? 260 : 0); return line(x, 420, x, 720, '#6b5a48', 6) + flag(x, 420, 120, 78, t * 3 + i, false, .1); }).join('');
+    q(s, '#lflags').innerHTML = [-220, 60, 330, 1560, 1830, 2110].map((x, i) => { return line(x, 420, x, 720, '#6b5a48', 6) + flag(x, 420, 120, 78, t * 3 + i, false, .1); }).join('');
   };
 
   // ================================================================= C1 · Que en el Uno seamos uno (89.7 → 100.3) — Eucaristía
