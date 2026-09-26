@@ -256,42 +256,60 @@
   // ================================================================= E2 · L6a  el siervo de los siervos de Dios (55.5) — Jueves Santo: el lavatorio de los pies
   // (Jueves Santo 2026, San Juan de Letrán: León XIV lavó los pies a 12 sacerdotes con una jarra dorada y un paño blanco)
   S.push({
-    id: 'lavatorio', at: 55.5, cam: { x0: 30, y0: -80, z0: 1.0, x1: -30, y1: -110, z1: 1.08, ease: 'inOutSine' },
+    id: 'lavatorio', at: 55.5, cam: { x0: -20, y0: 10, z0: 1.0, x1: 20, y1: -10, z1: 1.07, ease: 'inOutSine' },
     build() {
-      let cols = '';
-      for (let i = 0; i < 8; i++) { const x = -120 + i * 300; cols += rect(x, 60, 80, 820, '#e9dcc4') + ink(`M${x + 20},70 L${x + 20},880 M${x + 40},70 L${x + 40},880 M${x + 60},70 L${x + 60},880`, 1.2, .3) + rect(x - 14, 50, 108, 30, '#d8c8a8') + (i < 7 ? path(`M${x + 80},300 Q${x + 190},160 ${x + 300},300 L${x + 300},320 Q${x + 190},185 ${x + 80},320Z`, '#d8c8a8') : ''); }
-      let wins = ''; for (let i = 0; i < 7; i++) wins += windowBox(70 + i * 300, 110, 70, 150, { glass: '#f7d98a', frame: '#e9dcc4', arch: true });
-      // sacerdotes en los bancos del fondo (esperan su turno)
-      const pews = [...Array(12)].map((_, i) => person(-120 + i * 190, 900, 250, { color: '#f7f4ee', robe: true, pose: 'pray', skin: C.skin[i % 5], hair: C.hair[i % 6], style: ['short', 'bald', 'short', 'curly'][i % 4] })).join('') +
-        rect(-300, 800, W + 600, 30, '#7a5534') + rect(-300, 830, W + 600, 120, '#8a6040') + ink('M-300,800 L2220,800 M-300,830 L2220,830', 1.8, .6);
-      // sacerdote sentado de perfil, con el pie descalzo sobre la jofaina
-      const alb = 'M548,600 Q575,548 628,552 Q668,566 676,640 L672,776 L790,772 Q812,776 814,800 L842,958 L792,966 L770,826 L548,832Z';
-      const priest = rect(470, 520, 26, 330, '#7a5534') + rect(470, 820, 250, 22, '#7a5534') + rect(480, 842, 16, 150, '#5a3b26') + rect(700, 842, 16, 150, '#5a3b26') +
-        path(alb, '#f7f4ee') + path('M640,560 Q668,566 676,640 L672,776 L700,776 L700,640Z', '#e3ddd1', 'opacity=".7"') + ink(alb, 1.8, .6) + ink('M600,620 Q590,720 600,820 M700,790 Q760,800 800,960', 1.3, .4) +
-        ellipse(842, 978, 42, 13, C.skin[1]) + ink('M806,978 q36,-16 76,-2', 1.4, .6) + rect(590, 500, 30, 60, C.skin[1]) +
-        circle(606, 470, 46, C.skin[1]) + path('M562,468 Q560,418 606,414 Q650,414 652,450 Q620,432 592,446 Q576,460 562,468Z', C.hair[0]) + path('M650,470 L668,486 L650,494Z', C.skin[1]) + circle(630, 462, 3, INK) + ink('M628,500 q10,4 18,-2', 1.4, .6) +
-        poly([[620, 610], [660, 700], [730, 760]], '#f7f4ee', 30) + circle(740, 762, 16, C.skin[1]);
-      const basin = ellipse(860, 1000, 150, 40, '#c9a24a') + ellipse(860, 988, 130, 28, '#8fb8d8') + ink('M710,1000 Q860,1070 1010,1000', 2, .6) + ink('M760,990 q20,-6 40,0 M880,996 q20,-6 40,0', 1.4, .5);
-      return layer(0, rect(-300, -300, W + 600, H + 600, '#b89a70') + glow(960, 200, 1000, '#ffe6b0', .8)) +
-        layer(.15, wins + `<g id="lbeams">${rays(960, -300, 200, 1800, 10, '#fff4d0', .16, 4)}</g>`) +
-        layer(.3, paper(cols) + rect(-300, 870, W + 600, 400, '#c9b28a')) +
-        layer(.5, pews) +
-        layer(.85, rect(-300, 950, W + 600, 300, '#c9b28a') + [...Array(6)].map((_, i) => ink(`M-300,${960 + i * 24} L2220,${960 + i * 24}`, 1.2, .25)).join('') + priest + basin + `<g id="popew"></g>`);
+      const skinP = '#e2b690', skinH = '#f1d3b6';
+      // fondo cálido de la basílica, desenfocado
+      let bokeh = ''; const r = RNG(561);
+      for (let i = 0; i < 26; i++) bokeh += circle(r.range(-200, W + 200), r.range(40, 620), r.range(20, 70), r.pick(['#ffe2a0', '#fff0c8', '#f7c97a']), `opacity="${f1(r.range(.18, .45))}"`);
+      const cols = [...Array(6)].map((_, i) => rect(-100 + i * 380, -100, 110, 900, '#d9c4a0', 'opacity=".55"')).join('');
+      // mantel de lino bajo la jofaina
+      const linen = path('M-300,760 Q960,700 2220,760 L2220,1400 L-300,1400Z', '#f4efe4') + ink('M-300,760 Q960,700 2220,760', 1.6, .4) + [...Array(8)].map((_, i) => ink(`M${-100 + i * 300},${800 + (i % 2) * 20} q60,40 30,120`, 1.2, .25)).join('');
+      // jofaina dorada con agua
+      const basin = ellipse(900, 900, 400, 96, '#c9962e') + ellipse(900, 884, 378, 78, '#e0b040') + ellipse(900, 892, 340, 60, '#9cc6de') + ink('M500,900 Q900,1040 1300,900', 2, .6) + ink('M522,884 Q900,780 1278,884', 1.4, .5) +
+        `<g id="ripples"></g>`;
+      // pierna y pie descalzo del sacerdote (alba blanca arriba)
+      const foot = path('M600,500 Q640,640 676,790 Q640,830 652,872 Q700,900 820,900 Q960,904 1018,892 Q1052,884 1046,862 Q1040,846 1010,846 Q930,842 860,832 Q780,818 752,784 Q724,640 700,500Z', skinP) +
+        ink('M600,500 Q640,640 676,790 Q640,830 652,872 Q700,900 820,900 Q960,904 1018,892 Q1052,884 1046,862 Q1040,846 1010,846 Q930,842 860,832 Q780,818 752,784 Q724,640 700,500', 1.8, .6) +
+        [0, 1, 2, 3].map(i => ink(`M${1010 - i * 20},${850 + i * 2} q6,14 0,30`, 1.3, .45)).join('') + ink('M700,812 q30,10 60,4', 1.2, .4) +
+        path('M520,-200 L760,-200 L780,520 Q740,560 690,540 Q630,560 580,520Z', '#fbf9f3') + ink('M580,520 Q630,560 690,540 Q740,560 780,520 M640,0 Q650,300 630,520 M720,0 Q715,300 740,520', 1.6, .5);
+      // estola dorada del Papa asomando por la derecha
+      const stole = path('M1720,-100 L1820,-100 L1830,700 L1730,700Z', '#e0b040') + cross(1776, 380, 70, '#fbf3d6', 10) + ink('M1720,-100 L1730,700 M1820,-100 L1830,700', 1.6, .6) + ink('M1740,660 L1818,660', 2.4, .6);
+      return layer(0, rect(-300, -300, W + 600, H + 600, '#b8905e') + glow(500, 200, 900, '#ffe6b0', .7)) +
+        layer(.15, cols + bokeh) +
+        layer(.5, linen) +
+        layer(.7, basin + foot) +
+        layer(.9, stole + `<g id="hands"></g>`);
     },
     update(t, u, p, s) {
-      const pour = (Math.sin(u * 2.2) + 1) / 2;
-      const px = 1150, py = 1050, h = 620, uu = h / 100;
-      let g2 = pope(px, py, h, { pose: 'wash', alb: true, turn: .55, flip: true });
-      // jarra dorada en la mano derecha, inclinándose, y el chorro de agua sobre el pie
-      const jx = px - 25.8 * uu - 10, jy = py - 40 * uu - 30 + pour * 8, ang = 20 + pour * 38;
-      g2 += `<g transform="translate(${f1(jx)},${f1(jy)}) rotate(${f1(ang)})">${path('M-24,-44 L24,-44 L30,34 Q0,48 -30,34Z', '#e0b040')}${path('M-24,-38 Q-60,-44 -48,-8', 'none', 'stroke="#c98a1b" stroke-width="8"')}${path('M24,-44 L50,-58 L20,-32Z', '#e0b040')}${ink('M-24,-44 L24,-44 L30,34 Q0,48 -30,34Z', 1.6, .6)}${ink('M-26,-10 L28,-10', 1.2, .4)}</g>`;
-      const sx0 = jx - 40 - pour * 16, sy0 = jy - 50 + pour * 16;
-      if (pour > .3) g2 += path(`M${f1(sx0)},${f1(sy0)} Q${f1(sx0 - 40)},${f1(sy0 + 80)} 850,965`, 'none', `stroke="#d4ebf6" stroke-width="${f1(3 + pour * 7)}" stroke-linecap="round" opacity=".9"`) + [0, 1, 2].map(i => circle(840 + i * 16 + Math.sin(t * 9 + i) * 4, 962 - i * 6, 4, '#d4ebf6', 'opacity=".8"')).join('');
-      // paño blanco sobre el brazo izquierdo
-      const cx = px - 12.2 * uu, cy = py - 26 * uu;
-      g2 += path(`M${f1(cx - 40)},${f1(cy - 20)} L${f1(cx + 30)},${f1(cy - 30)} L${f1(cx + 40)},${f1(cy + 70)} L${f1(cx - 30)},${f1(cy + 80)}Z`, '#fdfbf4') + ink(`M${f1(cx - 40)},${f1(cy - 20)} L${f1(cx + 30)},${f1(cy - 30)} L${f1(cx + 40)},${f1(cy + 70)} L${f1(cx - 30)},${f1(cy + 80)}Z M${f1(cx - 20)},${f1(cy)} L${f1(cx - 14)},${f1(cy + 70)}`, 1.4, .5);
-      q(s, '#popew').innerHTML = g2;
-      q(s, '#lbeams').setAttribute('opacity', f1(.75 + .25 * Math.sin(u * 1.2)));
+      const tilt = (Math.sin(u * 1.9 - 1) + 1) / 2;      // 0 = derecha … 1 = vertiendo
+      const skinH = '#f1d3b6';
+      // brazo derecho con manga blanca y la jarra dorada
+      const jx = 1180 - tilt * 20, jy = 430 + tilt * 20, ang = -8 - tilt * 42;
+      let h = path(`M2300,120 Q1700,240 ${f1(jx + 150)},${f1(jy - 30)} L${f1(jx + 170)},${f1(jy + 80)} Q1760,380 2300,380Z`, '#fbf9f3') + ink(`M2300,120 Q1700,240 ${f1(jx + 150)},${f1(jy - 30)} M${f1(jx + 170)},${f1(jy + 80)} Q1760,380 2300,380 M1900,200 q-40,60 -20,120`, 1.8, .55);
+      const ewer = 'M-34,-104 Q-38,-60 -78,-14 Q-102,40 -70,92 Q0,132 70,92 Q102,40 78,-14 Q38,-60 34,-104Z';
+      h += `<g transform="translate(${f1(jx)},${f1(jy)}) rotate(${f1(ang)})">` +
+        path(ewer, '#e0b040') + path('M-34,-100 Q-90,-116 -132,-150 Q-104,-104 -40,-78Z', '#d9a73a') + ellipse(0, -106, 38, 10, '#c98a1b') +
+        path('M64,-60 Q150,-50 120,52', 'none', 'stroke="#c98a1b" stroke-width="16" stroke-linecap="round"') +
+        ink(ewer, 2, .65) + ink('M-34,-100 Q-90,-116 -132,-150 Q-104,-104 -40,-78', 1.6, .6) + ink('M-84,20 Q0,44 84,20 M-72,-20 Q0,0 72,-20', 1.3, .4) +
+        path('M-30,40 Q-10,20 20,34', 'none', 'stroke="#fff3c8" stroke-width="6" opacity=".6" stroke-linecap="round"') +
+        ellipse(132, 0, 42, 34, skinH) + [0, 1, 2, 3].map(i => `<rect x="${96 + i * 4}" y="${-32 + i * 18}" width="46" height="17" rx="8.5" fill="${skinH}"/>`).join('') + ink('M94,-34 q40,-8 80,18 M98,44 q40,10 70,-10', 1.4, .5) + '</g>';
+      const ca = Math.cos(ang * Math.PI / 180), sa = Math.sin(ang * Math.PI / 180);
+      // chorro de agua y gotas
+      const sp = [jx + ca * -132 - sa * -150, jy + sa * -132 + ca * -150];
+      if (tilt > .25) {
+        const w = 6 + (tilt - .25) * 16;
+        h += path(`M${f1(sp[0])},${f1(sp[1])} Q${f1(sp[0] - 60)},${f1(sp[1] + 160)} 880,828`, 'none', `stroke="#d9eef8" stroke-width="${f1(w)}" stroke-linecap="round" opacity=".92"`) +
+          path(`M${f1(sp[0] + 4)},${f1(sp[1] + 6)} Q${f1(sp[0] - 52)},${f1(sp[1] + 160)} 886,824`, 'none', 'stroke="#ffffff" stroke-width="2" opacity=".8"');
+        for (let i = 0; i < 7; i++) { const a2 = t * 6 + i * 1.3, k = (a2 % 1); h += circle(860 + Math.cos(i * 2.1) * (20 + k * 60), 830 - Math.sin(k * 3.14) * 40, 5 - k * 3, '#d9eef8', `opacity="${f1(1 - k)}"`); }
+      }
+      // mano izquierda con el paño blanco
+      const cy = 740 + Math.sin(u * 1.4) * 6;
+      h += path(`M2300,980 Q1700,900 1330,${f1(cy + 30)} L1320,${f1(cy + 120)} Q1700,1040 2300,1180Z`, '#fbf9f3') + ink(`M2300,980 Q1700,900 1330,${f1(cy + 30)} M1320,${f1(cy + 120)} Q1700,1040 2300,1180`, 1.8, .55) +
+        ellipse(1270, cy + 70, 70, 44, skinH) + path(`M1140,${f1(cy)} L1330,${f1(cy - 20)} L1350,${f1(cy + 140)} Q1250,${f1(cy + 190)} 1150,${f1(cy + 160)}Z`, '#ffffff') + ink(`M1140,${f1(cy)} L1330,${f1(cy - 20)} L1350,${f1(cy + 140)} Q1250,${f1(cy + 190)} 1150,${f1(cy + 160)}Z M1180,${f1(cy + 10)} Q1200,${f1(cy + 90)} 1170,${f1(cy + 160)} M1260,${f1(cy)} Q1280,${f1(cy + 90)} 1260,${f1(cy + 170)}`, 1.4, .5);
+      q(s, '#hands').innerHTML = h;
+      let rp = ''; for (let i = 0; i < 3; i++) { const k = ((u * .8 + i / 3) % 1); rp += ellipse(880, 870, 40 + k * 220, 8 + k * 36, 'none', `stroke="#ffffff" stroke-width="2" opacity="${f1((1 - k) * .7 * (tilt > .25 ? 1 : .3))}"`); }
+      q(s, '#ripples').innerHTML = rp;
     },
   });
 
@@ -312,11 +330,11 @@
         layer(1, rect(-300, 1000, W + 600, 300, '#141627'));
     },
     update(t, u, p, s) {
-      const k = u / 7, x = 900 + k * 90, y = 1010 + k * 30, h = 470 + k * 60, bob = Math.abs(Math.sin(u * 2.2)) * -5;
+      const k = u / 7, x = 900 + k * 80, y = 990 + k * 20, h = 360 + k * 40, bob = Math.abs(Math.sin(u * 2.2)) * -4;
       const torch = (tx, ty, th, i) => person(tx, ty, th, { color: '#2b2f48', robe: true, pose: 'reach', skin: C.skin[i], hair: C.hair[i], flip: i === 1 }) +
         line(tx + (i === 1 ? -1 : 1) * th * .24, ty - th * .72, tx + (i === 1 ? -1 : 1) * th * .28, ty - th * 1.05, '#6b4630', 6) +
         glow(tx + (i === 1 ? -1 : 1) * th * .28, ty - th * 1.1, 90, '#ffb84a', .8) + path(`M${f1(tx + (i === 1 ? -1 : 1) * th * .28 - 12)},${f1(ty - th * 1.05)} Q${f1(tx + (i === 1 ? -1 : 1) * th * .28 + Math.sin(t * 9 + i) * 6)},${f1(ty - th * 1.2)} ${f1(tx + (i === 1 ? -1 : 1) * th * .28 + 12)},${f1(ty - th * 1.05)}Z`, '#ffcf5a');
-      q(s, '#walk').innerHTML = torch(x - 330, y - 30, 380, 0) + torch(x + 320, y - 30, 380, 1) + `<g transform="translate(0 ${f1(bob)})">${pope(x, y, h, { pose: 'carry', turn: .25 })}</g>` + glow(x, y - h * .6, 420, '#ffd89a', .18);
+      q(s, '#walk').innerHTML = torch(x - 260, y - 30, 310, 0) + torch(x + 250, y - 30, 310, 1) + `<g transform="translate(0 ${f1(bob)})">${pope(x, y, h, { pose: 'carry', turn: .25 })}</g>` + glow(x, y - h * .6, 420, '#ffd89a', .18);
       qa(s, '.cd').forEach((c, i) => c.setAttribute('opacity', f1(.75 + .25 * Math.sin(t * 7 + i * 1.7))));
     },
   });
@@ -368,7 +386,7 @@
 
   // ================================================================= E2 · L8  a escuchar al peregrino de la paz (66.8)
   S.push({
-    id: 'balcon', at: 66.8, cam: { x0: 0, y0: 40, z0: 1.0, x1: 0, y1: 90, z1: 1.75, ease: 'inOutSine' },
+    id: 'balcon', at: 66.8, cam: { x0: 0, y0: 40, z0: 1.0, x1: 0, y1: 110, z1: 1.35, ease: 'inOutSine' },
     build() {
       let cols = '';
       for (let i = 0; i < 10; i++) cols += rect(160 + i * 170, 120, 56, 560, '#e9dfcc') + ink(`M${172 + i * 170},130 L${172 + i * 170},680 M${188 + i * 170},130 L${188 + i * 170},680 M${204 + i * 170},130 L${204 + i * 170},680`, 1.2, .3) + rect(150 + i * 170, 110, 76, 22, '#d8ccb4');
