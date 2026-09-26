@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Misión Rosario · Reel</title>
+<link rel="stylesheet" href="assets/fonts.css">
+<style>
+  :root{
+    --navy:#1d2f5e; --navy-2:#2a3f78; --gold:#8a6a2e; --gold-2:#b8913f; --gold-3:#e8c77e;
+    --cream:#f5efe3; --ink:#3b2a14;
+    --goz:#3f78c0; --lum:#5f8466; --dol:#a33a35; --glo:#a8843a;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{width:1080px;height:1920px;overflow:hidden;background:#000}
+  #stage{position:relative;width:1080px;height:1920px;overflow:hidden;background:var(--cream);
+    font-family:'Nunito',sans-serif;color:var(--navy)}
+  .full{position:absolute;left:0;top:0;width:1080px;height:1920px}
+  .layer{position:absolute;left:0;top:0;width:1080px;height:1920px;will-change:opacity,transform}
+  img{display:block}
+  .kicker{position:absolute;left:0;width:1080px;text-align:center;font-family:'Nunito';font-weight:900;
+    font-size:32px;letter-spacing:.28em;text-transform:uppercase;color:var(--gold)}
+  .title{position:absolute;left:60px;width:960px;text-align:center;font-family:'Crimson Pro',serif;font-weight:600;
+    color:var(--navy);line-height:1.04}
+  .title em{font-style:italic;color:var(--gold);font-weight:600}
+  .w{display:inline-block;will-change:transform,opacity,filter}
+  .masked{background:currentColor;-webkit-mask-size:100% 100%;mask-size:100% 100%;
+    -webkit-mask-repeat:no-repeat;mask-repeat:no-repeat}
+
+  /* ---------- fondo */
+  #paper{background:url(assets/cut/paper.jpg) center/cover}
+  #glow{background:radial-gradient(ellipse 70% 45% at 50% 42%,rgba(255,236,196,.85),rgba(255,236,196,0) 70%)}
+  .tint{opacity:0}
+
+  /* ---------- S1 gancho */
+  #s1-art{position:absolute;left:0;top:0;width:2265px;height:1920px;transform-origin:0 0}
+  #s1-art img{width:100%;height:100%}
+  #s1-shade{background:
+      linear-gradient(to bottom,rgba(30,16,6,.35) 0%,rgba(30,16,6,0) 22%,rgba(30,16,6,0) 45%,rgba(34,18,8,.78) 72%,rgba(26,13,5,.92) 100%)}
+  #s1-kicker{top:1150px;color:var(--gold-3)}
+  #s1-title{top:1205px;font-size:118px;color:#fff7ea;text-shadow:0 6px 30px rgba(0,0,0,.45)}
+  #s1-title em{color:var(--gold-3)}
+
+  /* ---------- S2 logo */
+  #s2-logo{position:absolute;left:110px;top:470px;width:860px;height:515px}
+  #s2-logo .rosary,#s2-logo .text{position:absolute;inset:0}
+  #s2-logo .rosary{color:var(--gold)}
+  #s2-logo .text{color:var(--navy)}
+  #s2-rosary-mask{position:absolute;inset:0}
+  #s2-cross{position:absolute;left:0;width:1080px;top:1075px;text-align:center;color:var(--gold-2)}
+  #s2-tag{top:1150px;font-size:66px;color:#6f5323;line-height:1.16}
+
+  /* ---------- S3 caja 3D */
+  #s3-kicker{top:250px}
+  #s3-title{top:300px;font-size:80px}
+  #box-floor{position:absolute;left:190px;top:1380px;width:700px;height:120px;border-radius:50%;
+    background:radial-gradient(ellipse at center,rgba(70,45,15,.45),rgba(70,45,15,0) 70%)}
+  #box-scene{position:absolute;left:240px;top:520px;width:600px;height:876px;perspective:2600px}
+  #box{position:absolute;inset:0;transform-style:preserve-3d}
+  .face{position:absolute;backface-visibility:hidden;overflow:hidden}
+  .face img{width:100%;height:100%}
+  .face .shade{position:absolute;inset:0;background:#1a0f05;opacity:0}
+  .f-front{left:0;top:0;width:600px;height:876px;transform:translateZ(54px);border-radius:3px}
+  .f-back{left:0;top:0;width:600px;height:876px;transform:rotateY(180deg) translateZ(54px);background:#ece6da}
+  .f-right{left:246px;top:0;width:108px;height:876px;transform:rotateY(90deg) translateZ(300px)}
+  .f-left{left:246px;top:0;width:108px;height:876px;transform:rotateY(-90deg) translateZ(300px);background:#e9e2d4}
+  .f-top{left:0;top:384px;width:600px;height:108px;transform:rotateX(90deg) translateZ(438px);
+    background:linear-gradient(#f3eee4,#e3dccd)}
+  .f-bottom{left:0;top:384px;width:600px;height:108px;transform:rotateX(-90deg) translateZ(438px);background:#d8d0c0}
+  .glint{position:absolute;left:-60%;top:-20%;width:45%;height:140%;
+    background:linear-gradient(90deg,rgba(255,255,255,0),rgba(255,255,255,.55),rgba(255,255,255,0));
+    transform:rotate(18deg);mix-blend-mode:screen;opacity:.9}
+
+  /* ---------- cartas */
+  .card{position:absolute;border-radius:5.2%/3.64%;overflow:hidden;background:#f3ede2;
+    box-shadow:0 2px 0 rgba(255,255,255,.35) inset,0 30px 60px rgba(55,35,12,.32),0 6px 16px rgba(55,35,12,.22)}
+  .card img{width:100%;height:100%}
+  .card .sheen{position:absolute;inset:0;background:linear-gradient(115deg,rgba(255,255,255,0) 30%,rgba(255,255,255,.28) 45%,rgba(255,255,255,0) 60%);
+    background-size:300% 100%;mix-blend-mode:screen}
+
+  /* S4 abanico */
+  #s4-kicker{top:250px}
+  #s4-title{top:300px;font-size:84px}
+  #fan{position:absolute;left:0;top:0;width:1080px;height:1920px}
+  #fan .card{width:380px;height:543px;left:350px;top:560px;transform-origin:50% 165%}
+  #s4-chips{position:absolute;left:0;width:1080px;top:1360px;display:flex;justify-content:center;gap:22px}
+  .chip{display:flex;align-items:center;gap:10px;font-family:'Nunito';font-weight:800;font-size:31px;color:#fff;
+    padding:12px 22px 12px 18px;border-radius:60px}
+  .chip i{width:14px;height:14px;border-radius:50%;background:#fff;opacity:.9;display:block}
+
+  /* S5 misterios */
+  .m-pill{position:absolute;left:0;width:1080px;top:236px;text-align:center}
+  .m-pill span{display:inline-block;font-family:'Nunito';font-weight:900;font-size:40px;letter-spacing:.16em;color:#fff;
+    padding:16px 40px 15px 46px;border-radius:80px;box-shadow:0 10px 26px rgba(40,25,10,.22)}
+  .m-days{position:absolute;left:0;width:1080px;top:326px;text-align:center;font-family:'Crimson Pro';font-style:italic;
+    font-weight:500;font-size:44px;color:#5b4a33}
+  .m-card{width:640px;height:914px;left:220px;top:402px}
+  .m-cap{position:absolute;left:60px;width:960px;top:1352px;text-align:center;font-family:'Crimson Pro';font-weight:600;
+    font-size:60px;line-height:1.08;color:var(--navy)}
+  .m-cap b{font-weight:700;font-style:italic}
+  .hl{position:absolute;left:0;top:0;width:640px;height:914px;overflow:visible;pointer-events:none}
+
+  /* S6 extras */
+  #s6-kicker{top:236px}
+  #s6-title{top:286px;font-size:64px}
+  #c-porq{width:450px;height:643px;left:70px;top:470px}
+  #c-let{width:450px;height:643px;left:560px;top:490px}
+  #bubble{position:absolute;left:100px;top:1190px;width:880px;padding:34px 40px 38px;background:#fbf7ef;border:5px solid var(--gold-2);
+    border-radius:70px;text-align:center;font-family:'Crimson Pro';font-weight:600;font-style:italic;font-size:60px;line-height:1.08;color:var(--navy);
+    box-shadow:0 18px 40px rgba(55,35,12,.2)}
+  #bubble:after{content:"";position:absolute;left:160px;top:-38px;width:56px;height:56px;background:#fbf7ef;
+    border-left:5px solid var(--gold-2);border-top:5px solid var(--gold-2);transform:rotate(45deg) skew(8deg,8deg);border-radius:8px 0 0 0}
+  #bubble small{display:block;font-family:'Nunito';font-style:normal;font-weight:800;font-size:28px;letter-spacing:.18em;color:var(--gold);margin-top:10px}
+
+  /* S7 atril */
+  #s7-kicker{top:236px}
+  #s7-title{top:286px;font-size:92px}
+  #photo{position:absolute;left:110px;top:440px;width:860px;height:1147px;border-radius:40px;overflow:hidden;
+    box-shadow:0 30px 70px rgba(55,35,12,.35);background:#c9a676}
+  #photo .ph{position:absolute;inset:0}
+  #photo .ph img{position:absolute;left:0;top:0;width:860px;height:1147px;transform-origin:50% 50%}
+  .pchip{position:absolute;left:0;width:1080px;top:1392px;text-align:center}
+  .pchip span{display:inline-block;background:rgba(251,247,239,.96);color:var(--navy);font-family:'Crimson Pro';font-weight:600;
+    font-size:50px;padding:12px 38px 16px;border-radius:60px;box-shadow:0 12px 30px rgba(40,25,10,.3)}
+  .pchip em{color:var(--gold);font-style:italic}
+
+  /* S8 eutrapelia */
+  #s8-kicker{top:560px}
+  #s8-logo{position:absolute;left:210px;top:630px;width:660px;height:228px;color:var(--gold)}
+  #s8-line{position:absolute;left:390px;top:905px;width:300px;height:3px;background:var(--gold-2);transform-origin:50% 50%}
+  #s8-title{top:950px;font-size:74px;line-height:1.1}
+  #s8-def{position:absolute;left:0;width:1080px;top:1210px;text-align:center;font-family:'Crimson Pro';font-style:italic;font-size:40px;color:#6d5a3d}
+
+  /* S9 CTA */
+  #rays{position:absolute;left:-460px;top:-340px;width:2000px;height:2000px;border-radius:50%;
+    background:repeating-conic-gradient(from 0deg,rgba(255,226,160,.30) 0deg 6deg,rgba(255,226,160,0) 6deg 15deg);
+    -webkit-mask:radial-gradient(circle,#000 0%,rgba(0,0,0,.6) 25%,transparent 55%);mask:radial-gradient(circle,#000 0%,rgba(0,0,0,.6) 25%,transparent 55%)}
+  #cta-box{position:absolute;left:318px;top:250px;width:444px;height:648px;border-radius:4px;overflow:hidden;
+    box-shadow:0 34px 70px rgba(55,35,12,.38),0 8px 18px rgba(55,35,12,.25)}
+  #cta-box img{width:100%;height:100%}
+  #cta-box .glint{opacity:.8}
+  #cta-pre{position:absolute;left:0;width:1080px;top:960px;text-align:center;font-family:'Crimson Pro';font-weight:600;font-style:italic;font-size:54px;color:var(--gold)}
+  #cta-url{position:absolute;left:0;width:1080px;top:1036px;text-align:center}
+  #cta-url span{display:inline-block;background:var(--navy);color:#fff;font-family:'Nunito';font-weight:900;font-size:70px;
+    padding:18px 54px 22px;border-radius:90px;box-shadow:0 18px 40px rgba(29,47,94,.35);letter-spacing:.01em}
+  #cta-logos{position:absolute;left:0;width:1080px;top:1225px;height:130px;display:flex;align-items:center;justify-content:center;gap:44px}
+  #cta-logos .sep{width:3px;height:92px;background:var(--gold-2);opacity:.6}
+  #cta-eu{width:290px;height:100px;color:var(--gold)}
+  #cta-fp{width:230px;height:122px;color:var(--gold)}
+  #cta-end{position:absolute;left:0;width:1080px;top:1392px;text-align:center;font-family:'Crimson Pro';font-style:italic;font-weight:500;font-size:46px;color:#5b4a33}
+
+  /* capas globales */
+  #dust{position:absolute;left:0;top:0;pointer-events:none}
+  #vignette{background:radial-gradient(ellipse 85% 70% at 50% 45%,rgba(0,0,0,0) 55%,rgba(60,35,10,.28) 100%);pointer-events:none}
+  #flash{background:#fff8e8;opacity:0;pointer-events:none}
+  #guides{display:none}
+  body.guides #guides{display:block}
+</style>
+</head>
+<body>
+<div id="stage">
+  <div id="paper" class="full"></div>
+  <div id="glow" class="full"></div>
+  <div id="tint-goz" class="full tint"></div>
+  <div id="tint-lum" class="full tint"></div>
+  <div id="tint-dol" class="full tint"></div>
+  <div id="tint-glo" class="full tint"></div>
+
+  <!-- S9 rayos (detrás de todo el contenido) -->
+  <div id="rays"></div>
+
+  <!-- ================= S1 · gancho -->
+  <div id="s1" class="layer">
+    <div id="s1-art"><img src="assets/cut/art-virgen.jpg" alt=""></div>
+    <div id="s1-shade" class="full"></div>
+    <div id="s1-kicker" class="kicker">Eutrapelia presenta</div>
+    <div id="s1-title" class="title" data-lines="Tu familia|tiene una *misión*"></div>
+  </div>
+
+  <!-- ================= S2 · logo -->
+  <div id="s2" class="layer">
+    <div id="s2-logo">
+      <div id="s2-rosary-mask"><div class="rosary masked" style="-webkit-mask-image:url(assets/cut/logo-mision-rosario.png);mask-image:url(assets/cut/logo-mision-rosario.png)"></div></div>
+      <div class="text masked" style="-webkit-mask-image:url(assets/cut/logo-mision-texto.png);mask-image:url(assets/cut/logo-mision-texto.png)"></div>
+    </div>
+    <div id="s2-cross">
+      <svg width="360" height="40" viewBox="0 0 360 40"><g fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round">
+        <path id="s2-line-l" d="M10 20 H150" /><path id="s2-line-r" d="M210 20 H350" /></g>
+        <g id="s2-crossmark" fill="currentColor"><rect x="176.5" y="4" width="7" height="32" rx="2"/><rect x="167" y="12" width="26" height="7" rx="2"/></g></svg>
+    </div>
+    <div id="s2-tag" class="title" data-lines="Con María,|volvemos a mirar|y escuchar a Jesús,|para llevar su vida al mundo"></div>
+  </div>
+
+  <!-- ================= S3 · caja 3D -->
+  <div id="s3" class="layer">
+    <div id="s3-kicker" class="kicker">Misión Rosario</div>
+    <div id="s3-title" class="title" data-lines="Cartas para rezar|el Rosario *en familia*"></div>
+    <div id="box-floor"></div>
+    <div id="box-scene"><div id="box">
+      <div class="face f-back"></div>
+      <div class="face f-left"><div class="shade"></div></div>
+      <div class="face f-bottom"></div>
+      <div class="face f-top"><div class="shade"></div></div>
+      <div class="face f-right"><img src="assets/cut/box-spine.jpg" alt=""><div class="shade"></div></div>
+      <div class="face f-front"><img src="assets/cut/box-front.jpg" alt=""><div class="glint"></div><div class="shade"></div></div>
+    </div></div>
+  </div>
+
+  <!-- ================= S4 · abanico -->
+  <div id="s4" class="layer">
+    <div id="s4-kicker" class="kicker">Adentro</div>
+    <div id="s4-title" class="title" data-lines="Los *20 misterios*|del Rosario"></div>
+    <div id="fan">
+      <div class="card" data-k="porq"><img src="assets/cut/card-porq.jpg" alt=""></div>
+      <div class="card" data-k="goz"><img src="assets/cut/card-goz.jpg" alt=""></div>
+      <div class="card" data-k="lum"><img src="assets/cut/card-lum.jpg" alt=""></div>
+      <div class="card" data-k="dol"><img src="assets/cut/card-dol.jpg" alt=""></div>
+      <div class="card" data-k="glo"><img src="assets/cut/card-glo.jpg" alt=""></div>
+      <div class="card" data-k="let"><img src="assets/cut/card-let.jpg" alt=""></div>
+    </div>
+    <div id="s4-chips">
+      <div class="chip" style="background:var(--goz)"><i></i>Gozosos</div>
+      <div class="chip" style="background:var(--lum)"><i></i>Luminosos</div>
+      <div class="chip" style="background:var(--dol)"><i></i>Dolorosos</div>
+      <div class="chip" style="background:var(--glo)"><i></i>Gloriosos</div>
+    </div>
+  </div>
+
+  <!-- ================= S5 · misterios (se generan por JS) -->
+  <div id="s5" class="layer"></div>
+
+  <!-- ================= S6 · extras -->
+  <div id="s6" class="layer">
+    <div id="s6-kicker" class="kicker">Y además</div>
+    <div id="s6-title" class="title" data-lines="Por qué rezarlo *hoy*|y las Letanías de la Virgen"></div>
+    <div id="c-porq" class="card"><img src="assets/cut/card-porq.jpg" alt=""><div class="sheen"></div></div>
+    <div id="c-let" class="card"><img src="assets/cut/card-let.jpg" alt=""><div class="sheen"></div></div>
+    <div id="bubble">«La familia que reza unida,<br>permanece unida»</div>
+  </div>
+
+  <!-- ================= S7 · atril -->
+  <div id="s7" class="layer">
+    <div id="s7-kicker" class="kicker">Incluye</div>
+    <div id="s7-title" class="title" data-lines="Atril de *madera*"></div>
+    <div id="photo">
+      <div class="ph" id="ph1"><img src="assets/cut/atril-frente.jpg" alt=""></div>
+      <div class="ph" id="ph2"><img src="assets/cut/atril-perfil.jpg" alt=""></div>
+    </div>
+    <div class="pchip" id="pchip1"><span>Para tener el misterio <em>a la vista</em></span></div>
+    <div class="pchip" id="pchip2"><span>…y rezar <em>juntos</em> en casa</span></div>
+  </div>
+
+  <!-- ================= S8 · Eutrapelia -->
+  <div id="s8" class="layer">
+    <div id="s8-kicker" class="kicker">Una propuesta de</div>
+    <div id="s8-logo" class="masked" style="-webkit-mask-image:url(assets/cut/logo-eutrapelia.png);mask-image:url(assets/cut/logo-eutrapelia.png)"></div>
+    <div id="s8-line"></div>
+    <div id="s8-title" class="title" data-lines="Unir la *alegría del juego*|con el desarrollo|de la *virtud*"></div>
+  </div>
+
+  <!-- ================= S9 · CTA -->
+  <div id="s9" class="layer">
+    <div id="cta-box"><img src="assets/cut/box-front.jpg" alt=""><div class="glint"></div></div>
+    <div id="cta-pre">Conseguilo en</div>
+    <div id="cta-url"><span>eutrapelia.com.ar</span></div>
+    <div id="cta-logos">
+      <div id="cta-eu" class="masked" style="-webkit-mask-image:url(assets/cut/logo-eutrapelia.png);mask-image:url(assets/cut/logo-eutrapelia.png)"></div>
+      <div class="sep"></div>
+      <div id="cta-fp" class="masked" style="-webkit-mask-image:url(assets/cut/logo-familias.png);mask-image:url(assets/cut/logo-familias.png)"></div>
+    </div>
+    <div id="cta-end">Con María, llevemos a Jesús al mundo</div>
+  </div>
+
+  <canvas id="dust" width="1080" height="1920"></canvas>
+  <div id="vignette" class="full"></div>
+  <div id="flash" class="full"></div>
+
+  <!-- zonas seguras de Reels (sólo con ?guides) -->
+  <div id="guides" class="full" style="pointer-events:none">
+    <div style="position:absolute;left:0;top:0;width:1080px;height:220px;background:rgba(255,0,0,.25)"></div>
+    <div style="position:absolute;left:0;top:1500px;width:1080px;height:420px;background:rgba(255,0,0,.25)"></div>
+    <div style="position:absolute;left:940px;top:900px;width:140px;height:600px;background:rgba(255,0,0,.25)"></div>
+  </div>
+</div>
+
+<script src="reel.js"></script>
+</body>
+</html>
