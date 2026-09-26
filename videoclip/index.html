@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Seamos Uno · videoclip</title>
+<link rel="stylesheet" href="fonts.css">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{width:1920px;height:1080px;overflow:hidden;background:#000}
+  #stage{position:relative;width:1920px;height:1080px;overflow:hidden;background:#0d1426;font-family:'Crimson Pro',serif}
+  .full{position:absolute;left:0;top:0;width:1920px;height:1080px}
+  .scene{position:absolute;left:0;top:0;width:1920px;height:1080px;display:none;will-change:opacity}
+  .scene svg{display:block}
+  #grain{mix-blend-mode:overlay;opacity:.22;background-size:1920px 1080px;pointer-events:none}
+  #vignette{background:radial-gradient(ellipse 75% 70% at 50% 48%,rgba(0,0,0,0) 55%,rgba(10,6,2,.42) 100%);pointer-events:none}
+  #shade{background:linear-gradient(to top,rgba(8,10,22,.62) 0%,rgba(8,10,22,.35) 16%,rgba(8,10,22,0) 34%);pointer-events:none}
+  #fade{background:#000;pointer-events:none}
+
+  /* letra */
+  #lyrics{position:absolute;left:0;top:0;width:1920px;height:1080px;pointer-events:none}
+  .lyr{position:absolute;left:160px;width:1600px;bottom:92px;text-align:center;visibility:hidden;
+    font-weight:600;font-size:62px;line-height:1.1;color:#fffaf0;letter-spacing:.005em;
+    text-shadow:0 2px 3px rgba(0,0,0,.55),0 0 26px rgba(0,0,0,.45)}
+  .lyr .lw{display:inline-block;--lit:0;
+    text-shadow:0 2px 3px rgba(0,0,0,.55),0 0 26px rgba(0,0,0,.45),0 0 calc(var(--lit) * 22px) rgba(255,214,130,calc(var(--lit) * .55))}
+  .lyr.chorus{font-style:italic;font-size:70px;color:#fff3d6}
+  .lyr.chorus .lw.key{color:#ffd77e;font-weight:700}
+
+  /* título */
+  #title{position:absolute;left:0;top:0;width:1920px;height:1080px;pointer-events:none;text-align:center;color:#fff8ea}
+  #t-main{position:absolute;left:0;width:1920px;top:360px;font-weight:700;font-size:148px;letter-spacing:.16em;padding-left:.16em;
+    text-shadow:0 4px 30px rgba(0,0,0,.45),0 0 60px rgba(255,210,120,.35)}
+  #t-line{position:absolute;left:760px;top:560px;width:400px;height:3px;background:linear-gradient(90deg,rgba(255,214,130,0),#ffd682,rgba(255,214,130,0))}
+  #t-sub{position:absolute;left:0;width:1920px;top:590px;font-style:italic;font-size:46px;color:#ffe6b8;text-shadow:0 2px 16px rgba(0,0,0,.5)}
+  #t-visit{position:absolute;left:0;width:1920px;top:410px;font-weight:600;font-size:64px;line-height:1.15;text-shadow:0 3px 24px rgba(0,0,0,.5)}
+  #t-visit small{display:block;font-family:'Nunito';font-weight:800;font-size:30px;letter-spacing:.34em;color:#ffd682;margin-top:18px}
+  #t-auth{position:absolute;left:0;width:1920px;top:640px;font-style:italic;font-size:40px;color:#fff1d8;text-shadow:0 2px 16px rgba(0,0,0,.6)}
+
+  /* créditos */
+  #credits{position:absolute;left:0;top:0;width:1920px;height:1080px;visibility:hidden;
+    background:radial-gradient(ellipse 80% 90% at 70% 45%,#2c3f78 0%,#16244a 60%,#0c1530 100%)}
+  #credits .glowc{position:absolute;left:1030px;top:120px;width:860px;height:860px;border-radius:50%;
+    background:radial-gradient(circle,rgba(255,210,120,.28),rgba(255,210,120,0) 65%)}
+  #rollwrap{position:absolute;left:120px;top:0;width:820px;height:1080px;overflow:hidden;
+    -webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 16%,#000 84%,transparent 100%);mask-image:linear-gradient(to bottom,transparent 0,#000 16%,#000 84%,transparent 100%)}
+  #roll{position:absolute;left:0;top:0;width:820px;text-align:center;color:#fbf3e3}
+  #roll h1{font-weight:700;font-size:92px;letter-spacing:.14em;padding-left:.14em;color:#ffe2a0;text-shadow:0 0 40px rgba(255,210,120,.35)}
+  #roll .who{font-style:italic;font-size:40px;margin-top:10px;color:#ffe9c4}
+  #roll h3{font-family:'Nunito';font-weight:800;font-size:26px;letter-spacing:.32em;text-transform:uppercase;color:#ffd682;margin:64px 0 14px}
+  #roll p{font-size:44px;line-height:1.28}
+  #roll .thanks{font-style:italic;font-size:38px;line-height:1.3;margin-top:70px;color:#f4e6cc}
+  #roll .visit{margin-top:70px;font-weight:600;font-size:48px;line-height:1.2;color:#fff}
+  #roll .visit b{display:block;font-family:'Nunito';font-weight:900;font-size:40px;letter-spacing:.3em;color:#ffd682;margin-top:10px}
+  #roll .sun{margin:60px auto 0;width:120px;height:120px}
+  #photo{position:absolute;left:1100px;top:150px;width:640px;padding:20px 20px 74px;background:#fbf6ea;border-radius:6px;
+    box-shadow:0 30px 70px rgba(0,0,0,.5),0 6px 16px rgba(0,0,0,.35);transform-origin:50% 50%}
+  #photo img{display:block;width:600px;height:800px;object-fit:cover;object-position:50% 40%;border-radius:2px}
+  #photo span{position:absolute;left:0;right:0;bottom:20px;text-align:center;font-style:italic;font-size:34px;color:#4a3a25}
+</style>
+</head>
+<body>
+<div id="stage">
+  <div id="scenes" class="full"></div>
+  <div id="shade" class="full"></div>
+
+  <div id="title">
+    <div id="t-main">SEAMOS UNO</div>
+    <div id="t-line"></div>
+    <div id="t-sub">Canción para la visita del Papa León XIV a la Argentina</div>
+    <div id="t-visit">Visita del Papa León XIV<br>a la Argentina<small>2026</small></div>
+    <div id="t-auth">Marina Scarafía · José Luis Caterina</div>
+  </div>
+
+  <div id="lyrics"></div>
+
+  <div id="credits">
+    <div class="glowc"></div>
+    <div id="rollwrap"><div id="roll">
+      <h1>SEAMOS UNO</h1>
+      <h3>Autores</h3>
+      <p>Marina Scarafía - José Luis Caterina</p>
+      <h3>Voces</h3>
+      <p>Marina Scarafía<br>Brunella Ribone<br>Ramiro Carravetta<br>Hno. Juan Pablo Aimaretti</p>
+      <h3>Flauta</h3>
+      <p>Lucía Fumagallo</p>
+      <h3>Niños</h3>
+      <p>María Candelaria<br>María Pilar<br>Facundo José</p>
+      <h3>Edición</h3>
+      <p>Nicolás G. Glaser</p>
+      <div class="thanks">Agradecemos al Coro P Luis Maltauro Schp<br>que colaboró en la realización<br>de esta producción.</div>
+      <div class="visit">Visita del Papa León XIV a Argentina.<b>2026</b></div>
+      <svg class="sun" viewBox="-60 -60 120 120" id="credit-sun"></svg>
+    </div></div>
+    <div id="photo"><img src="assets/foto-grupal.png" alt=""><span>¡Gracias!</span></div>
+  </div>
+
+  <div id="grain" class="full"></div>
+  <div id="vignette" class="full"></div>
+  <div id="fade" class="full"></div>
+</div>
+<audio id="audio" src="build/audio.wav" preload="auto"></audio>
+<script src="lib.js"></script>
+<script src="sketch.js"></script>
+<script>window.SCENES = [];</script>
+<script src="scenes1.js"></script>
+<script src="scenes2.js"></script>
+<script src="scenes3.js"></script>
+<script src="clip.js"></script>
+<script>document.getElementById('credit-sun').innerHTML = LIB.solDeMayo(0, 0, 16);</script>
+</body>
+</html>
