@@ -32,7 +32,7 @@ const server = http.createServer((req, res) => {
   fs.createReadStream(p).pipe(res);
 });
 await new Promise(r => server.listen(0, '127.0.0.1', r));
-const base = `http://127.0.0.1:${server.address().port}/index.html?render${args.includes('--guides') ? '&guides' : ''}${args.includes('--mosaic') || args.includes('--clean') ? '&clean' : ''}${args.includes('--post') ? '&post' : ''}`;
+const base = `http://127.0.0.1:${server.address().port}/${opt('--page') || 'index.html'}?render${args.includes('--guides') ? '&guides' : ''}${args.includes('--mosaic') || args.includes('--clean') ? '&clean' : ''}${args.includes('--post') ? '&post' : ''}`;
 
 const browser = await chromium.launch({ args: ['--force-color-profile=srgb', '--disable-lcd-text', '--font-render-hinting=none'] });
 const page = await browser.newPage({ viewport: { width: 1920, height: 1080 }, deviceScaleFactor: 1 });
@@ -67,7 +67,7 @@ if (args.includes('--post')) {
     const hdr = Buffer.alloc(4);
     hdr.writeUInt32LE(A.length); await write(Buffer.from(hdr)); await write(A);
     hdr.writeUInt32LE(B.length); await write(Buffer.from(hdr)); await write(B);
-    const tb = Buffer.alloc(8); tb.writeFloatLE(t, 0); tb.writeFloatLE(1 - Math.min(1, Math.max(0, (t - 208.8) / 1.0)), 4); await write(tb);
+    const tb = Buffer.alloc(8); tb.writeFloatLE(t, 0); tb.writeFloatLE(args.includes('--no-sketch') ? 0 : 1 - Math.min(1, Math.max(0, (t - 208.8) / 1.0)), 4); await write(tb);
     if (i % 15 === 0) console.log(`cuadro ${i}/${n1}  ${((Date.now() - t0) / 1000).toFixed(0)}s`);
   }
   py.stdin.end(); await new Promise(r => py.on('close', r));
