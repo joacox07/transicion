@@ -12,6 +12,11 @@ acuarela y papel. La letra aparece sincronizada palabra por palabra.
 | `seamos-uno-videoclip.mp4` | Versión para subir a YouTube (1080p, ~95 MB, audio AAC 192k) |
 | `seamos-uno-videoclip-whatsapp.mp4` | Versión 720p de menos de 30 MB para compartir por WhatsApp |
 | `miniatura.jpg` | Miniatura sugerida para YouTube |
+| `seamos-uno-letra.mp4` | **Video de letra** (1080p): fondo azul de los créditos, cada verso completo y sincronizado, y los mismos créditos al final |
+| `seamos-uno-letra-whatsapp.mp4` | Video de letra en 720p para WhatsApp |
+
+El video de letra se genera con `letra.html` + `letra.js` (`node render.mjs --page letra.html --post --no-sketch`)
+y `assemble-letra.sh`, que le pega los créditos cortados tal cual del videoclip.
 
 La versión de máxima calidad (~300 MB) se genera con `build.sh` / `assemble.sh`, pero no se
 sube al repositorio porque supera el límite de 100 MB de GitHub.
